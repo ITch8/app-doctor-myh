@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>问诊</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<link rel="stylesheet" href="../css/iconfont-state.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<style>
+			.mui-segmented-control .mui-control-item.mui-active {
+				background-color: #32a3d6;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				border-color: #32a3d6;
+				border-left: 1px solid #32a3d6;
+				line-height: 29px;
+				color: #32A3D6;
+			}
+			
+			.mui-segmented-control {
+				border: 1px solid #32a3d6;
+				font-size: 14px;
+				border-radius: 7px;
+			}
+			
+			.mui-bar .mui-segmented-control {
+				width: 75%;
+			}
+			
+			.mui-control-content {
+				position: initial;
+			}
+			
+			.mui-fullscreen .mui-segmented-control~.mui-slider-group {
+				position: initial;
+			}
+			
+			.mui-slider-indicator.mui-segmented-control.mui-segmented-control-inverted {
+				height: 45px;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted .mui-control-item {
+				line-height: 45px;
+				font-size: 15px;
+				color: #333333;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #32A3D6;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar {
+				background-color: #32A3D6;
+			}
+			
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
+				border-bottom: 0 solid;
+			}
+    		
+    		.case-list{
+				border: 1px solid #DDDDDD;
+				margin: 15px 10px;
+    			padding: 15px 10px 0 !important;
+			}
+			.case-detail{
+				border-top: 1px solid #DDDDDD;
+				padding: 10px 0 0;
+				margin: 10px 0;
+				font-size: 12px;
+				color: #666666;
+			}
+			.case-detail p{
+				font-size: 12px;
+				color: #666666;
+			}
+			.mui-row img{
+				padding-right: 5px;
+				height: 50px !important;
+				max-width: 50px !important;
+			}
+			.imgs{
+				height: 50px;
+			}
+			.mui-row label{
+				text-align: right;
+			}
+			.mui-row span{
+				padding-left: 10px;
+			}
+			.mui-row .mui-btn-mini{
+			    line-height: 0.62;
+				font-size: 10px !important;
+				border-radius: 14px;
+				padding: 8px 12px;
+				position: absolute;
+				bottom: 0;
+			    right: -13px;
+				border: 1px solid #32A3D6;
+				color: #32A3D6;
+			}
+			.undo{
+				margin: 10px 15px;
+				font-size: 13px;
+				color: #333333;
+			}
+			.case-title{
+				font-size: 15px;
+				color: #32a3d6;
+			}
+			.case-detail-sex{
+				font-size: 12px;
+				color: #666666;
+				float: right;
+			}
+			.money{
+				color: #32a3d6 !important;
+			}
+			.mui-table-view-cell:after{
+				height: 0;
+			}
+			.mui-table-view-cell {
+    			padding: 5px 10px;
+    		}
+    		.mui-slider .mui-control-item.mui-active span{
+    			border-bottom: 2px solid #32A3D6 !important;
+    			padding-bottom: 12px;
+    		}
+    		.mui-col-xs-3 {
+			    width: 20%;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<div id="segmentedControl" class="mui-segmented-control">
+				<a id="infoask_control" class="mui-control-item mui-active" href="#item-infoask" style="border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+					留言问答
+				</a>
+				<a id="onlineask_control" class="mui-control-item" href="#item-onlineask">
+					在线问诊
+				</a>
+				<a id="book_control" class="mui-control-item" href="#item-book">
+					预约挂号
+				</a>
+			</div>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-scroll-wrapper mui-fullscreen">
+			<div id='allData' class="mui-scroll">
+				<div id="item-infoask" class="mui-control-content mui-active">
+					<div id="infoask" class="mui-slider">
+						<div id="tab-infoask" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+							<a attrid="1" class="mui-control-item mui-active" href="#infoask-unfinished"><span>未完成</span></a>
+							<a attrid="2" class="mui-control-item" href="#infoask-finished"><span>已完成</span></a>
+						</div>
+						<div class="mui-slider-group">
+							<div id="infoask-unfinished" class="mui-slider-item mui-control-content mui-active">
+								<ul id="infoask-unfinished-ul" class="mui-table-view"></ul>
+							</div>
+							<div id="infoask-finished" class="mui-slider-item mui-control-content">
+								<ul id="infoask-finished-ul" class="mui-table-view"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="item-onlineask" class="mui-control-content">
+					<div id="onlineask" class="mui-slider">
+						<div id="tab-onlineask" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+							<a attrid="1" class="mui-control-item mui-active" href="#onlineask-unfinished"><span>未完成</span></a>
+							<a attrid="2" class="mui-control-item" href="#onlineask-finished"><span>已完成</span></a>
+						</div>
+						<div class="mui-slider-group">
+							<div id="onlineask-unfinished" class="mui-slider-item mui-control-content mui-active">
+								<ul id="onlineask-unfinished-ul" class="mui-table-view"></ul>
+							</div>
+							<div id="onlineask-finished" class="mui-slider-item mui-control-content">
+								<ul id='onlineask-finished-ul' class="mui-table-view"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="item-book" class="mui-control-content">
+					<div id="book" class="mui-slider">
+						<div id="tab-book" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+							<a attrid="1" class="mui-control-item mui-active" href="#book-unfinished"><span>未完成</span></a>
+							<a attrid="2" class="mui-control-item" href="#book-finished"><span>已完成</span></a>
+						</div>
+						<div class="mui-slider-group">
+							<div id="book-unfinished" class="mui-slider-item mui-control-content mui-active">
+								<ul id="book-unfinished-ul" class="mui-table-view">
+							    </ul>
+							</div>
+							<div id="book-finished" class="mui-slider-item mui-control-content">
+								<ul id='book-finished-ul' class="mui-table-view">
+							    </ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script>
+		var  privateToken = null;
+		var infoask_unfinished_ulObj = null,infoask_finished_ulObj = null,infoask_finished_ulObj=null,onlineask_finished_ulObj=null,onlineask_unfinished_ulObj=null,book_finished_ulObj=null,book_unfinished_ulObj=null;
+		(function(_,doc,w,u){
+			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll(),_.previewImage();
+			infoask_unfinished_ulObj = doc.getElementById("infoask-unfinished-ul");
+			infoask_finished_ulObj = doc.getElementById("infoask-finished-ul");
+			onlineask_finished_ulObj = doc.getElementById("onlineask-finished-ul");
+			onlineask_unfinished_ulObj =  doc.getElementById("onlineask-unfinished-ul");
+			book_finished_ulObj = doc.getElementById("book-finished-ul");
+			book_unfinished_ulObj =  doc.getElementById("book-unfinished-ul");
+			var undoState = 1,doneState = 2;
+			var pdata = {
+				limit:500
+			};
+			//获取留言问答未完成数据
+			_.plusReady(function(){
+				privateToken = w.getUser();
+				if(privateToken){
+					pdata.privateToken = privateToken;
+					getAskInfoList(1);
+				}
+				//监听留言问答的未完成和完成的切换
+				doc.getElementById("infoask").addEventListener("slide",function(e){
+					getAskInfoList(e.detail.slideNumber+1);
+				})
+				//监听在线问诊的未完成和完成的切换
+				doc.getElementById("onlineask").addEventListener("slide",function(e){
+					getAskOnlineList(e.detail.slideNumber+1);
+				})
+				//监听预约的未完成和完成的切换
+				doc.getElementById("book").addEventListener("slide",function(e){
+					getRegList(e.detail.slideNumber+1);
+				})
+				//点击留言问答导航
+				doc.getElementById("infoask_control").addEventListener('tap',function(){
+					_(".mui-scroll-wrapper").scroll().scrollTo(0,0);
+					var state = doc.getElementById("tab-infoask").querySelector(".mui-control-item.mui-active").getAttribute("attrid");
+					getAskInfoList(state);
+				});
+				//点击在线问诊导航
+				doc.getElementById("onlineask_control").addEventListener('tap',function(){
+					_(".mui-scroll-wrapper").scroll().scrollTo(0,0);
+					var state = doc.getElementById("tab-onlineask").querySelector(".mui-control-item.mui-active").getAttribute("attrid");
+					getAskOnlineList(state);
+				});
+				//点击预约挂号导航
+				doc.getElementById("book_control").addEventListener('tap',function(){
+					_(".mui-scroll-wrapper").scroll().scrollTo(0,0);
+					var state = doc.getElementById("tab-book").querySelector(".mui-control-item.mui-active").getAttribute("attrid");
+					getRegList(state);
+				});
+			});
+			
+			/**
+			 * @description 获取留言问答数据
+			 * @state 状态值  1未完成  2已完成
+			 */
+			function getAskInfoList(state){
+				pdata.state = state;
+				pdata.privateToken = w.getUser();
+				u.mypost('doctor_center/leavingMsgList',pdata, true, function(data) {
+					if (data.code == 0) {
+						renderAskInfoList(data.data || [],state);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			
+			/**
+			 * @description 获取在线问诊数据
+			 * @state 状态值  1未完成  2已完成
+			 */
+			function getAskOnlineList(state){
+				pdata.state = state;
+				pdata.privateToken = w.getUser();
+				u.mypost('doctor_center/getOnlineDiaList',pdata, true, function(data) {
+					if (data.code == 0) {
+						renderOnlineList(data.data[0] || [],state);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			
+			/**
+			 * @description 获取预约挂号数据
+			 * @state 状态值  1未完成  2已完成
+			 */
+			function getRegList(state){
+				pdata.state = state;
+				pdata.privateToken = w.getUser();
+				u.mypost('doctor_center/getRegList',pdata, true, function(data) {
+					if (data.code == 0 || data.code == 1) {
+						renderRegList(data.data[0] || [],state);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			
+			
+			/**
+			 * @description 列举留言问答数据
+			 * @param data 列表数据
+			 * @param state 状态值
+			 */
+			function renderAskInfoList(data,state){
+				var imgServer = data.imgServer || '';
+				var data = data.order;
+				var dataObj = null,liclass = '',iconclass ='',btnHtml = "<button type='button' class='mui-btn mui-btn-mini'>回复</button>";
+				if(state == 1){
+					dataObj = infoask_unfinished_ulObj;
+					liclass = 'mui-table-view-cell case-list uask';
+					iconclass ='<span class="mui-icon iconfont icon-jian"></span>';
+				}else{
+					dataObj = infoask_finished_ulObj;
+					iconclass ='<span class="mui-icon iconfont icon-fangxuanzhong"></span>'
+					liclass = 'mui-table-view-cell case-list ask';
+					btnHtml = "";
+				}
+				if(data && data.length > 0){
+					var item = null,imgs = null,preIndex = null,imgHtml = '';
+					u.emptyHtml(dataObj);
+					_.each(data,function(i,o){
+						preIndex = i;
+						item = doc.createElement("li");
+						item.id = o.id;
+						item.className = liclass;
+						imgs = o.img;
+						//图片
+						if(imgs){
+							imgs.img0?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' src='"+imgServer+imgs.img0+"' />":imgHtml +="";
+							imgs.img1?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' src='"+imgServer+imgs.img1+"' />":imgHtml +="";
+							imgs.img2?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' src='"+imgServer+imgs.img2+"' />":imgHtml +="";
+						}
+						item.innerHTML = ""+iconclass+
+										"<span class='case-title'>"+(o.nickname || '-')+"的留言问诊</span>"+
+										"<span class='case-detail-sex'>&emsp;&emsp;性别:"+(o.sex || '男')+" &emsp;&emsp;年龄:"+(o.age || '无')+"</span>"+
+										"<div class='case-detail mui-row'>"+
+											"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.nickname || '无')+"</span>"+
+											"<label class='mui-col-xs-3'>金额:</label><span class='money mui-col-xs-9'>¥ "+(o.price || '0.0')+"</span>"+
+											"<label class='mui-col-xs-3'>询问问题:</label>"+
+											"<span class='mui-col-xs-9'>"+(o.askerContent || '无')+
+												"<div class='imgs'>"+imgHtml+btnHtml+
+												"</div>"+
+											"</span>"+
+										"</div>";
+						dataObj.appendChild(item);
+						imgHtml = "";
+					})
+				}else{
+					dataObj.innerHTML = nodataHtmlInfo;
+				}
+			}
+			
+			/**
+			 * @description 列举在线问诊数据
+			 * @param data 列表数据
+			 * @param state 状态值
+			 */
+			function renderOnlineList(data,state){
+				var dataObj = null,iconclass ='';
+				if(state == 1){
+					dataObj = onlineask_unfinished_ulObj;
+					iconclass ='<span class="mui-icon iconfont icon-jian"></span>';
+				}else{
+					dataObj = onlineask_finished_ulObj;
+					iconclass ='<span class="mui-icon iconfont icon-fangxuanzhong"></span>'
+				}
+				if(data && data.length > 0){
+					u.emptyHtml(dataObj);
+					var item = null;
+					_.each(data,function(i,o){
+						item = doc.createElement("li");
+						item.id = o.id;
+						item.className ="mui-table-view-cell case-list";
+						item.innerHTML = ""+iconclass+
+							"<span class='case-title'>"+(o.username || '-')+"的在线问诊</span>"+
+							"<span class='case-detail-sex'>&emsp;&emsp;&emsp;性别:"+(o.sex || '无')+" &emsp;&emsp;年龄:"+(o.age || '无')+"</span>"+
+							"<div class='case-detail mui-row'>"+
+								"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.askNickname || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+(o.askTelephone || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>沟通时长:</label><span class='mui-col-xs-9'>"+(o.phoneTimeLen || '无')+"分钟</span>"+
+								"<label class='mui-col-xs-3'>沟通时间:</label><span class='mui-col-xs-9'>"+(o.hopeCalldate || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>基本病情:</label>"+
+								"<span class='mui-col-xs-9'>"+
+									"<div>"+(o.situation || '无')+"</div>"+
+								"</span>"+
+								"<label class='mui-col-xs-3'>病情概述:</label>"+
+								"<span class='mui-col-xs-9'>"+
+									"<div>"+(o.askContent || '无')+"</div>"+
+								"</span>"+
+								"<label class='mui-col-xs-3'>备注:</label><span class='mui-col-xs-9'>"+(o.docRemark || '无')+"</span>"+
+							"</div>";
+							dataObj.appendChild(item);
+					})
+				}else{
+					dataObj.innerHTML = nodataHtmlInfo;
+				}
+			}
+			
+			/**
+			 * @description 列举预约挂号数据
+			 * @param data 列表数据
+			 * @param state 状态值
+			 */
+			function renderRegList(data,state){
+				var dataObj = null,iconclass= '';
+				if(state == 1){
+					dataObj = book_unfinished_ulObj;
+					iconclass ='<span class="mui-icon iconfont icon-jian"></span>';
+				}else{
+					dataObj = book_finished_ulObj;
+					iconclass ='<span class="mui-icon iconfont icon-fangxuanzhong"></span>'
+				}
+				if(data && data.length > 0 && data[0]){
+					u.emptyHtml(dataObj);
+					var item = null;
+					_.each(data,function(i,o){
+						item = doc.createElement("li");
+						item.id = o.id;
+						item.className = "mui-table-view-cell case-list";
+						item.innerHTML = ""+iconclass +
+								"<span class='case-title'>"+(o.username || '无')+"的预约挂号</span>"+
+								"<span class='case-detail-sex'>&emsp;&emsp;&emsp;性别:"+(o.sex || '无')+" &emsp;&emsp;年龄:"+(o.age || '无')+"</span>"+
+								"<div class='case-detail mui-row'>"+
+									"<label class='mui-col-xs-3'>预约人:</label><span class='mui-col-xs-9'>"+(o.contacts || '无')+"</span>"+
+									"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+(o.appointTel || '无')+"</span>"+
+									"<label class='mui-col-xs-3'>预约时间:</label><span class='mui-col-xs-9'>"+(o.appointTime || '无')+"</span>"+
+								"</div>";
+						dataObj.appendChild(item);
+					})
+				}else{
+					dataObj.innerHTML = nodataHtmlInfo;
+				}
+			}
+			
+			//监听进入详情页
+			_(doc).on("tap", ".uask", function(e) {
+				var extras = {
+					id: this.id
+				};
+				w.openView("infoaskDetail.html", extras);
+				e.stopPropagation();
+			})
+			_("#infoask-unfinished").on("tap", ".mui-table-view-cell", function() {
+				//回复留言
+				//					w.openView("infoaskDetail.html");
+			})
+			_(doc).on("tap", ".ask", function() {
+				var extras = {
+					id: this.id
+				};
+				//回复留言
+				w.openView("askAndAnwserDetail.html", extras);
+			})
+			//在线问诊详情页面(未完成)
+			_("#onlineask-unfinished").on("tap", ".mui-table-view-cell", function() {
+				var extras = {
+					id: this.id
+				};
+				w.openView("onlineaskDetail.html", extras);
+			})
+			//在线问诊详情页面（已完成）
+			_("#onlineask-finished").on("tap", ".mui-table-view-cell", function() {
+				var extras = {
+					id: this.id,
+					state:2
+				};
+				w.openView("onlineaskDetail.html", extras);
+			})
+			//预约挂号详情页面
+			_("#item-book").on("tap", ".mui-table-view-cell", function() {
+				var extras = {
+					id: this.id
+				};
+				w.openView("bookDetail.html", extras);
+			})
+	})(mui, document, window,util)
+	
+		/*
+		 *登陆之前 显示无数据
+		 * **/
+		function emptyClinicData(){
+			infoask_unfinished_ulObj.innerHTML = nodataHtmlInfo;
+			infoask_finished_ulObj.innerHTML = nodataHtmlInfo;
+			onlineask_finished_ulObj.innerHTML = nodataHtmlInfo;
+			onlineask_unfinished_ulObj.innerHTML = nodataHtmlInfo;
+			book_finished_ulObj.innerHTML = nodataHtmlInfo;
+			book_unfinished_ulObj.innerHTML = nodataHtmlInfo;
+		}
+		
+		/**
+		 * @description 获取未完成留言问答数据
+		 */
+		function getUndoAskInfoList(){
+			var pdata = {state:1,privateToken:window.getUser()};
+			util.mypost('doctor_center/leavingMsgList',pdata, true, function(data) {
+				if (data.code == 0) {
+					var imgServer = data.data.imgServer || '';
+					var data = data.data.order;
+					var dataObj = null,btnHtml = "<button type='button' class='mui-btn mui-btn-mini'>回复</button>";
+						dataObj = infoask_unfinished_ulObj;
+					if(data && data.length > 0){
+						var item = null,imgs = null,preIndex = null,imgHtml = '';
+						util.emptyHtml(dataObj);
+						mui.each(data,function(i,o){
+							preIndex = i;
+							item = document.createElement("li");
+							item.id = o.id;
+							item.className = 'mui-table-view-cell case-list uask';
+							imgs = o.img;
+							//图片
+							if(imgs){
+								if(imgs instanceof Array){
+									for (var i = 0; i < imgs.length; i++) {
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' data-lazyload='"+imgServer+imgs[i]+"' />";
+									}
+								}else{
+									imgs.img0?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' data-lazyload='"+imgServer+imgs.img0+"' />":imgHtml +="";
+									imgs.img1?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' data-lazyload='"+imgServer+imgs.img1+"' />":imgHtml +="";
+									imgs.img2?imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' data-lazyload='"+imgServer+imgs.img2+"' />":imgHtml +="";
+								}
+							}
+							item.innerHTML = "<span class='mui-icon iconfont icon-jian'></span>"+
+											"<span class='case-title'>"+(o.nickname || '无')+"的留言问诊</span>"+
+											"<span class='case-detail-sex'>&emsp;&emsp;性别:"+o.sex+" &emsp;&emsp;年龄:"+(o.age || '无')+"</span>"+
+											"<div class='case-detail mui-row'>"+
+												"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.nickname || '无')+"</span>"+
+												"<label class='mui-col-xs-3'>金额:</label><span class='money mui-col-xs-9'>¥ "+(o.price || '0.0')+"</span>"+
+												"<label class='mui-col-xs-3'>基本病情:</label>"+
+												"<span class='mui-col-xs-9'>"+(o.situation || '无')+
+													"<div class='imgs'>"+imgHtml+btnHtml+
+													"</div>"+
+												"</span>"+
+											"</div>";
+							dataObj.appendChild(item);
+							imgHtml = "";
+						})
+					}else{
+						dataObj.innerHTML = nodataHtmlInfo;
+					}
+				}else{
+					mui.toast(data.msg || '服务器异常');
+				}
+			}, function() {
+				mui.toast('获取列表失败');
+			});
+		}
+	</script>
+</html>

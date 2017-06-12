@@ -1,0 +1,588 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的钱包</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-views,
+			.mui-view,
+			.mui-pages,
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #FFFFFF;
+				z-index: 999;
+			}
+			.mui-pages {
+				top: 44px;
+				height: auto;
+			}
+			.mui-page.mui-transitioning {
+				-webkit-transition: -webkit-transform 100ms ease;
+				transition: transform 100ms ease;
+			}
+			.mui-page-left {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+			.mui-ios .mui-page-left {
+				-webkit-transform: translate3d(-20%, 0, 0);
+				transform: translate3d(-20%, 0, 0);
+			}
+			.mui-navbar {
+				position: fixed;
+				right: 0;
+				left: 0;
+				z-index: 999;
+				height: 44px;
+				background-color: #FFFFFF;
+			}
+			.mui-navbar .mui-bar {
+				position: absolute;
+				background: transparent;
+				text-align: center;
+			}
+			.mui-android .mui-navbar-inner.mui-navbar-left {
+				opacity: 0;
+			}
+			.mui-ios .mui-navbar-left .mui-left,
+			.mui-ios .mui-navbar-left .mui-center,
+			.mui-ios .mui-navbar-left .mui-right {
+				opacity: 0;
+			}
+			.mui-navbar .mui-btn-nav {
+				-webkit-transition: none;
+				transition: none;
+				-webkit-transition-duration: .0s;
+				transition-duration: .0s;
+			}
+			.mui-navbar .mui-bar .mui-title {
+				display: inline-block;
+				width: auto;
+			}
+			.mui-page {
+				display: none;
+			}
+			.mui-pages .mui-page {
+				display: block;
+			}
+		
+			.h-money{
+				text-align: center;
+				background-color: #32A3D6;
+				height: 120px;
+				padding-top: 30px;
+			}
+			.h-money p{
+				color: #FFFFFF;
+				font-size: 15px;
+			}
+			.money{
+				font-size: 30px !important;
+				padding-top: 5px;
+			}
+		    .mui-table-view-cell:after,.mui-input-group .mui-input-row:after{
+		    	left: 0;
+		    }
+		    .info{
+		    	color: #32A3D6;
+		    	margin-top: 15px;
+		    	text-align: center;
+		    }
+		    .next .mui-btn-green{
+				width: 80%;
+				height: 35px;
+			    margin: 20px 0 45px 0;
+			}
+			.mui-bar-nav~.mui-content{
+				padding-top: 0px;
+			}
+			.mui-input-group,input{
+				font-size: 15px;
+			}
+			.mui-input-group input{
+				text-align: right;
+				padding-right: 20px;
+			}
+			input::-webkit-input-placeholder{
+				text-align: left;
+			}
+			.mui-btn-blue{
+				background-color: #32A3D6;
+				border: 1px solid #32A3D6;
+			}
+			.right {
+				float: right;
+				line-height: 0;
+				color: #32A3D6;
+				font-size: 15px;
+			}
+			
+			.tilte {
+				font-size: 15px;
+				color: #333333;
+			}
+			
+			.time {
+				color: #666666;
+				font-size: 12px;
+			}
+			
+			#payrecord .mui-table-view-cell {
+				height: 60px;
+			}
+			#payrecord .mui-table-view:before{
+				top: 0;
+				height: 2px;
+			}
+			#payrecord .mui-table-view:after {
+			    height: 0;
+			}
+			#payrecord .noContent {
+				margin: 0;
+    			padding: 30% 0;
+    		}
+		</style>
+	</head>
+	<body>
+		<!--页面主结构开始-->
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<!--页面主结构结束-->
+		<!--单页面开始-->
+		<div id="wallet" class="mui-page">
+			<!--页面标题栏开始-->
+			<div class="header2 mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">我的钱包</h1>
+			</div>
+			<!--页面标题栏结束-->
+			<!--页面主内容区开始-->
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="h-money">
+							<p>账户余额</p>
+							<p class="money"><span style="font-size: 25px;">¥ </span><span id="amount">0</span></p>
+						</div>
+						<ul class="mui-table-view">
+					        <li id="getMoneyLi" class="mui-table-view-cell">
+					            <a href="#getmoney" class="mui-navigate-right">提现 </a>
+					        </li>
+					        <li id="payRecordLi" class="mui-table-view-cell">
+					            <a href="#payrecord" class="mui-navigate-right">交易记录</a>
+					        </li>
+					    </ul>
+					</div>
+				</div>
+			</div>
+			<!--页面主内容区结束-->
+		</div>
+		<div id="getmoney" class="mui-page">
+			<div class="header2 mui-navbar-inner mui-bar mui-bar-nav">
+				<button id='getmoney_header' type="button" class="mui-pull-left mui-action-back mui-btn  mui-btn-link mui-btn-nav">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">提现</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper moneyDiv">
+					<div class="mui-scroll">
+						<div class="h-money">
+							<p>账户余额</p> 
+							<p class="money"><span style="font-size: 25px;">¥ </span><span id="amount_2">0</span></p>
+						</div>
+						<form class="mui-input-group">
+							<div class="mui-input-row">
+						        <label>卡号:</label>
+						        <input type="number" id="cart" maxlength="19" placeholder="您提现使用的存储卡号">
+						    </div>
+						    <div class="mui-input-row">
+						        <label>银行:</label>
+						        <input id="bank" type="text" readonly="readonly" style="padding-right: 32px;">
+						        <a class="mui-navigate-right"></a>
+						    </div>
+						    <div class="mui-input-row">
+						        <label>开户地区:</label>
+						        <input id="address" type="text" readonly="readonly" style="padding-right: 32px;">
+						        <a class="mui-navigate-right"></a>
+						    </div>
+						    <div class="mui-input-row">
+						        <label>姓名:</label>
+						        <input type="text" id="realName" value="">
+						    </div>
+						     <div class="mui-input-row">
+						        <label>身份证:</label>
+						        <input type="number" id="identity" value="">
+						    </div>
+						     <div class="mui-input-row">
+						        <label>金额:</label>
+						        <input type="number" id="amount_num" maxlength="12" value="">
+						    </div>
+						</form>
+						<p class="info">提交后5-7个工作日到账</p>
+						<div class="next">
+							<button id="sure" type="button" class="mui-btn mui-btn-green" disabled="disabled">确认提现</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="payrecord" class="mui-page">
+			<div class="header mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">交易记录</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul id="record_list" class="mui-table-view"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/mui.view.js" ></script>
+<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+<script type="text/javascript" src="../js/mui.poppicker.js" ></script>
+<script type="text/javascript" src="../js/city.data-3.js" ></script>
+<script type="text/javascript" src="../js/common.js" ></script>
+<script type="text/javascript">
+	//初始化单页view
+	var viewApi =null;
+	var userPicker = null,city = null;
+	(function(_,w,doc,u){
+		_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+		viewApi = _('#app').view({
+			defaultPage: '#wallet'
+		});
+		var getMoneyWeb = null;
+		var amountObj = doc.getElementById("amount"),amount2Obj = doc.getElementById("amount_2"),list = doc.getElementById("record_list");
+		var sureObj = doc.getElementById("sure"),bankObj = doc.getElementById("bank"),addressObj =doc.getElementById("address"),realNameObj =doc.getElementById("realName");
+		var identityObj = doc.getElementById("identity"),amount_numObj = doc.getElementById("amount_num");
+		_.plusReady(function(){
+			var pdata = {privateToken:w.getUser()};
+			//获取我的钱包账户余额
+			u.mypost("doctor_center/myMoneyIndex",pdata,false,function(data){
+				if(data.code == 0){
+					amountObj.innerHTML = data.data[0][0]?data.data[0][0].amount:0.0;
+				}else{
+					_.toast(data.msg);
+				}
+			},myerror);
+			
+			//进入提现页面
+			doc.getElementById("getMoneyLi").addEventListener("tap",function(){
+				u.mypost("doctor_center/takeCashView",pdata,false,function(data){
+					if(data.code == 0){
+						amount2Obj.innerHTML = data.data[0][0]?data.data[0][0].amount:0.0;;//提现页面账户余额
+					}else{
+						_.toast(data.msg);
+					}
+				},myerror);
+			});
+			
+			//进入交易记录页面
+			doc.getElementById("payRecordLi").addEventListener("tap",function(){
+				u.mypost("doctor_center/tradeLog",pdata,true,function(data){
+					if(data.code == 0){
+						u.emptyHtml(list);
+						var data = data.data[0];
+						if(data && data.length > 0){
+							var item = null,oprate = null;
+							_.each(data,function(i,o){
+								item = doc.createElement("li");
+								item.className = "mui-table-view-cell";
+								oprate = (o.tradeType == "提现")?"-":"+";
+								item.innerHTML = "<div class='tilte'>"+o.tradeType+"</div>"+
+							        	"<span class='time'>"+o.tradeTime+"</span>"+
+							        	"<span class='right'>"+oprate+o.tradeVolume+"</span>";
+							    list.appendChild(item);
+							});
+						}else{
+							list.innerHTML = nodataHtmlInfo;
+						}
+					}else{
+						_.toast(data.msg);
+					}
+				},myerror);
+			});
+			
+			//监听银行的输入
+			bankObj.addEventListener("input",
+			function() {
+				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
+					sureObj.removeAttribute("disabled");
+				} else {
+					sureObj.setAttribute("disabled", "disabled");
+				}
+			});
+			//监听地址的输入
+			addressObj.addEventListener("input",
+			function() {
+				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
+					sureObj.removeAttribute("disabled");
+				} else {
+					sureObj.setAttribute("disabled", "disabled");
+				}
+			});
+			//监听真实姓名的输入
+			realNameObj.addEventListener("input",
+			function() {
+				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
+					sureObj.removeAttribute("disabled");
+				} else {
+					sureObj.setAttribute("disabled", "disabled");
+				}
+			});
+			//监听身份证的输入
+			identityObj.addEventListener("input",
+			function() {
+				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
+					sureObj.removeAttribute("disabled");
+				} else {
+					sureObj.setAttribute("disabled", "disabled");
+				}
+			});
+			//监听金额的输入
+			amount_numObj.addEventListener("input",
+			function() {
+				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
+					sureObj.removeAttribute("disabled");
+				} else {
+					sureObj.setAttribute("disabled", "disabled");
+				}
+			});
+			//提现请求
+			doc.getElementById("sure").addEventListener("tap",function(){
+				pdata.cardNum = doc.getElementById("cart").value;
+				pdata.bank = bankObj.value.trim();
+				pdata.address = addressObj.value.trim();
+				pdata.realName = realNameObj.value.trim();
+				pdata.identity = identityObj.value.trim();
+				pdata.amount = amount_numObj.value.trim();
+				u.mypost("doctor_center/takeCash",pdata,true,function(data){
+					if(data.code == 0){
+						_.toast("提现成功");
+						bankObj.value = '';
+						addressObj.value = '';
+						realNameObj.value = '';
+						identityObj.value = '';
+						amount_numObj.value = '';
+						doc.getElementById("cart").value = '';
+						//获取我的钱包账户余额
+						u.mypost("doctor_center/myMoneyIndex",pdata,false,function(data){
+							if(data.code == 0){
+								amountObj.innerHTML = data.data[0][0].amount;
+							}else{
+								_.toast(data.msg);
+							}
+						},myerror);
+						_.back();
+					}else if(data.code == 1){
+						_.toast("请填写正确银行卡号");
+					}else if(data.code == 2){
+						_.toast("请填写正确身份证号");
+					}else if(data.code == 3){
+						_.toast("提现金额大于用户余额");
+					}else if(data.code == 4){
+						_.toast("用户类型异常");
+					}else if(data.code == -1){
+						_.toast("系统错误,请重试");
+					}
+				},myerror);
+			});
+			//编辑其他信息时 地址和银行选择器隐藏
+			var objs = doc.querySelectorAll("input");
+			for (var i = 0; i < objs.length; i++) {
+				if(!objs[i].getAttribute("readonly")){
+					objs[i].addEventListener("focus",function(){
+						setTimeout(function(){
+							userPicker?userPicker.hide():'';
+							city?city.hide():'';
+						},100);
+					});
+				}
+			}
+			bankObj.addEventListener("focus",function(){
+				city?city.hide():'';
+			});
+			addressObj.addEventListener("focus",function(){
+				userPicker?userPicker.hide():'';
+			});
+			bankObj.addEventListener("tap",function(){
+				city?city.hide():'';
+			});
+			addressObj.addEventListener("tap",function(){
+				userPicker?userPicker.hide():'';
+			});
+			doc.getElementById("getmoney_header").addEventListener("tap",function(){
+				city?city.hide():'';
+				userPicker?userPicker.hide():'';
+			});
+		});
+		userPicker = new _.PopPicker();
+		userPicker.setData([{
+			value: '中国银行',
+			text: '中国银行'
+		}, {
+			value: '招商银行',
+			text: '招商银行'
+		}, {
+			value: '农业银行',
+			text: '农业银行'
+		}, {
+			value: '工商银行',
+			text: '工商银行'
+		}, {
+			value: '建设银行',
+			text: '建设银行'
+		}
+		, {
+			value: '美国运通银行',
+			text: '美国运通银行'
+		}
+		, {
+			value: '亚洲商业银行有限公司',
+			text: '亚洲商业银行有限公司'
+		}
+		, {
+			value: '罗马银行',
+			text: '罗马银行'
+		}
+		, {
+			value: '盘谷银行',
+			text: '盘谷银行'
+		}
+		, {
+			value: '东亚银行',
+			text: '东亚银行'
+		}
+		, {
+			value: '印度银行',
+			text: '印度银行'
+		}
+		, {
+			value: '加拿大满地可银行',
+			text: '加拿大满地可银行'
+		}
+		, {
+			value: '法国国家巴黎银行',
+			text: '法国国家巴黎银行'
+		}
+		, {
+			value: '花旗银行',
+			text: '花旗银行'
+		}
+		, {
+			value: '澳洲联邦银行',
+			text: '澳洲联邦银行'
+		}
+		, {
+			value: '恒生银行',
+			text: '恒生银行'
+		}
+		, {
+			value: '韩国外换银行',
+			text: '韩国外换银行'
+		}
+		, {
+			value: '华侨银行',
+			text: '华侨银行'
+		}
+		, {
+			value: '上海商业银行',
+			text: '上海商业银行'
+		}
+		, {
+			value: '永亨银行',
+			text: '永亨银行'
+		}
+		, {
+			value: '永隆银行',
+			text: '永隆银行'
+		}
+		]);
+		var showUserPickerButton = doc.getElementById('bank');
+		showUserPickerButton.addEventListener('tap', function(event) {
+			doc.activeElement.blur();
+			setTimeout(function(){
+				userPicker.show(function(items) {
+					var v = JSON.stringify(items[0].value);
+					v = v.substr(1,v.length-2);
+					if( 0 == v){
+					}else{
+						showUserPickerButton.value = v;
+					}
+				});
+			},200)
+		}, false);
+		city = new _.PopPicker({
+				layer: 3
+			});
+		city.setData(cityData3);
+		var address = doc.getElementById('address'),province = null;
+		address.addEventListener('tap', function(event) {
+			doc.activeElement.blur();
+			setTimeout(function(){
+				city.show(function(items) {
+					province = (items[0] || {}).text == (items[1] || {}).text?(items[0] || {}).text:(items[0] || {}).text + "" + (items[1] || {}).text
+					address.value = province + "" + (items[2].text?items[2].text:'');
+				});
+			},200)
+		}, false);
+		
+//		//监听滚动条的滚动事件 
+//		doc.querySelector(".mui-scroll-wrapper.moneyDiv").addEventListener("scroll",function(){
+//			doc.activeElement.blur();
+//		});
+	})(mui,window,document,util)
+	var view = viewApi.view;
+	(function($) {
+		//处理view的后退与webview后退
+		var oldBack = $.back;
+		$.back = function() {
+			if (viewApi.canBack()) { 
+				//如果view可以后退，则执行view的后退
+				viewApi.back();
+			} else { //执行webview后退
+				oldBack();
+			}
+		};
+		//监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+		//第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+		view.addEventListener('pageBeforeShow', function(e) {});
+		view.addEventListener('pageShow', function(e) {});
+		view.addEventListener('pageBeforeBack', function(e) {});
+		view.addEventListener('pageBack', function(e) {
+			city?city.hide():'';
+			userPicker?userPicker.hide():'';
+		});
+	})(mui);
+</script>
+</html>

@@ -1,0 +1,769 @@
+{
+  "login.html": {
+    "resources": [
+      "imgs/logo.png",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/common.js",
+      "imgs/wechat-icon.png",
+      "icon/qq.png",
+      "icon/sinaweibo.png",
+      "icon/weixin.png",
+      "imgs/logo-copyright.png",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "css/login.css"
+    ],
+    "refer": [
+      "register.html",
+      "forgetPwd.html",
+      "index.html",
+      "mynews/news.html",
+      "mymain/main.html",
+      "myclinic/clinic.html",
+      "mycenter/mine.html",
+      "mymain/infolist.html",
+      "myclinic/onlineaskDetail.html",
+      "myclinic/bookDetail.html",
+      "myclinic/infoaskDetail.html",
+      "mynews/newsdetail.html",
+      "myclinic/askAndAnwserDetail.html",
+      "mycenter/myinfo.html",
+      "mymain/contactService.html",
+      "mycenter/template.html",
+      "mysetting/setting.html",
+      "guide.html",
+      "myclinic/medicalDetail.html"
+    ]
+  },
+  "forgetPwd.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "resetPwd.html"
+    ]
+  },
+  "resetPwd.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "register.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mysetting/setting.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/aboutus.html",
+      "js/mui.view.js",
+      "imgs/logo.png",
+      "fonts/iconfont-nodata.ttf",
+      "js/jscomon.js",
+      "imgs/logo-copyright.png"
+    ],
+    "refer": [
+      "mysetting/aboutsoft.html",
+      "mysetting/feedBack.html",
+      "mysetting/help.html",
+      "login.html",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/aboutus.html",
+      "mysetting/template-setting.html"
+    ]
+  },
+  "mysetting/help.html": {
+    "resources": [
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "mysetting/help.html",
+      "css/pullRefresh.css",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.extend.js"
+    ],
+    "refer": []
+  },
+  "index.html": {
+    "resources": [
+      "mymain/main.html",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/imagePreview.css",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "fonts/iconfont-nav.ttf",
+      "css/iconfont-nav.css",
+      "index.html",
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "js/mui.previewimage.js",
+      "css/pullRefresh.css"
+    ],
+    "refer": [
+      "mynews/news.html",
+      "mymain/main.html",
+      "myclinic/clinic.html",
+      "mycenter/mycenter.html",
+      "mycenter/mine.html",
+      "mymain/infolist.html",
+      "myclinic/infoaskDetail.html",
+      "myclinic/onlineaskDetail.html",
+      "myclinic/bookDetail.html",
+      "myclinic/askAndAnwserDetail.html",
+      "mynews/newsdetail.html"
+    ]
+  },
+  "mycenter/mycenter.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "icon/person-infor.png",
+      "icon/code.png",
+      "icon/wallet.png"
+    ],
+    "refer": [
+      "mycenter/mylove.html",
+      "mycenter/updatePwd.html",
+      "mycenter/myinfo.html"
+    ]
+  },
+  "mycenter/mylove.html": {
+    "resources": [
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "css/pullRefresh.css",
+      "mycenter/mylove.html",
+      "imgs/logo.png",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.extend.js",
+      "js/mui.lazyload.js",
+      "js/mui.lazyload.img.js",
+      "imgs/60x60.gif",
+      "imgs/infor-3.png",
+      "imgs/infor-2.png",
+      "mycenter/updatePwd.html",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/aboutus.html",
+      "imgs/del.png"
+    ],
+    "refer": [
+      "mycenter/updatePwd.html",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/aboutus.html"
+    ]
+  },
+  "mycenter/updatePwd.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "mycenter/myinfo.html",
+      "mysetting/setting.html",
+      "mycenter/mywallet.html",
+      "mycenter/mylove.html",
+      "mycenter/aboutus.html"
+    ],
+    "refer": [
+      "login.html",
+      "mycenter/myinfo.html",
+      "mycenter/aboutus.html",
+      "mysetting/setting.html",
+      "mycenter/mywallet.html",
+      "mycenter/mylove.html"
+    ]
+  },
+  "mycenter/mine.html": {
+    "refer": [
+      "mycenter/mycenter.html",
+      "mycenter/mywallet.html",
+      "mycenter/aboutus.html",
+      "mysetting/setting.html",
+      "mycenter/myinfo.html",
+      "mycenter/mylove.html",
+      "mycenter/updatePwd.html",
+      "mycenter/template.html"
+    ],
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "icon/wallet.png",
+      "icon/center.png",
+      "icon/set.png",
+      "icon/about.png",
+      "icon/code.png",
+      "icon/collect.png"
+    ]
+  },
+  "mycenter/aboutus.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "mysetting/setting.html",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/updatePwd.html",
+      "mycenter/mylove.html"
+    ],
+    "refer": [
+      "mysetting/setting.html",
+      "mycenter/myinfo.html",
+      "mycenter/mywallet.html",
+      "mycenter/updatePwd.html",
+      "mycenter/mylove.html"
+    ]
+  },
+  "mysetting/aboutsoft.html": {
+    "resources": [
+      "imgs/logo.png",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mysetting/feedBack.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mycenter/mywallet.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "mycenter/mylove.html",
+      "mycenter/aboutus.html",
+      "mycenter/myinfo.html",
+      "mycenter/updatePwd.html",
+      "js/mui.view.js",
+      "js/mui.picker.min.js",
+      "js/mui.poppicker.js",
+      "js/city.data-3.js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.min.css",
+      "js/jscomon.js",
+      "fonts/iconfont-nodata.ttf"
+    ],
+    "refer": [
+      "mycenter/getmoney.html",
+      "mycenter/mypayrecord.html",
+      "mycenter/mylove.html",
+      "mycenter/myinfo.html",
+      "mycenter/aboutus.html",
+      "mycenter/updatePwd.html"
+    ]
+  },
+  "mynews/news.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "mynews/news.html",
+      "js/common.js",
+      "js/mui.pullToRefresh.min.js",
+      "imgs/logo.png",
+      "js/mui.pullToRefresh.material.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/pullRefresh.css",
+      "imgs/infor-1.png",
+      "imgs/infor-3.png",
+      "imgs/infor-2.png",
+      "js/mui.lazyload.js",
+      "js/mui.lazyload.img.js",
+      "imgs/60x60.gif"
+    ],
+    "refer": [
+      "mynews/newsdetail.html"
+    ]
+  },
+  "mymain/main.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "imgs/infor-1.png",
+      "imgs/infor-3.png",
+      "imgs/banner.png",
+      "imgs/infor-photo-2.png",
+      "imgs/medical-2.png",
+      "imgs/medical-1.png",
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "css/pullRefresh.css",
+      "mymain/main.html",
+      "js/mui.lazyload.js",
+      "js/mui.lazyload.img.js",
+      "imgs/60x60.gif",
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js",
+      "css/imagePreview.css",
+      "js/kefu.js",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "fonts/iconfont2.ttf",
+      "css/iconfont2.css",
+      "icon/service-icon.png",
+      "icon/alarm.png",
+      "imgs/banner2.png",
+      "fonts/iconfont-nodata.ttf",
+      "js/jscomon.js"
+    ],
+    "refer": [
+      "mymain/contactService.html",
+      "myclinic/infoaskDetail.html",
+      "mymain/infolist.html",
+      "mynews/newsdetail.html",
+      "login.html"
+    ]
+  },
+  "mymain/infolist.html": {
+    "resources": [
+      "mymain/infolist.html",
+      "js/common.js",
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "css/mui.min.css",
+      "css/pullRefresh.css",
+      "fonts/mui.ttf",
+      "js/mui.lazyload.js",
+      "js/mui.lazyload.img.js",
+      "imgs/medical-2.png",
+      "imgs/infor-3.png",
+      "js/mui.zoom.js",
+      "css/imagePreview.css",
+      "js/mui.previewimage.js",
+      "imgs/medical-1.png"
+    ],
+    "refer": [
+      "myclinic/medicalDetail.html"
+    ]
+  },
+  "mymain/contactService.html": {
+    "resources": [
+      "imgs/service.png",
+      "imgs/anwser.png",
+      "js/mui.js",
+      "imgs/myAnwser.png",
+      "css/common.css",
+      "css/mui.min.css",
+      "imgs/medical-2.png",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "js/common.js",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "arclist/68.gif",
+      "arclist/62.gif",
+      "arclist/58.gif",
+      "arclist/7.gif",
+      "arclist/64.gif",
+      "arclist/67.gif",
+      "arclist/45.gif",
+      "arclist/10.gif",
+      "arclist/41.gif",
+      "arclist/30.gif",
+      "arclist/20.gif",
+      "arclist/47.gif",
+      "arclist/11.gif",
+      "arclist/74.gif",
+      "arclist/39.gif",
+      "arclist/72.gif",
+      "arclist/15.gif",
+      "arclist/21.gif",
+      "arclist/75.gif",
+      "arclist/51.gif",
+      "arclist/71.gif",
+      "js/jquery.qqFace.js",
+      "arclist/13.gif",
+      "arclist/37.gif",
+      "arclist/73.gif",
+      "arclist/69.gif",
+      "arclist/65.gif",
+      "arclist/18.gif",
+      "arclist/42.gif",
+      "arclist/17.gif",
+      "arclist/57.gif",
+      "arclist/55.gif",
+      "arclist/4.gif",
+      "arclist/61.gif",
+      "arclist/36.gif",
+      "arclist/6.gif",
+      "arclist/49.gif",
+      "arclist/12.gif",
+      "arclist/28.gif",
+      "arclist/53.gif",
+      "arclist/35.gif",
+      "arclist/60.gif",
+      "js/jquery-browser.js",
+      "arclist/32.gif",
+      "arclist/33.gif",
+      "css/bootstrap.min.css",
+      "arclist/66.gif",
+      "arclist/31.gif",
+      "arclist/40.gif",
+      "arclist/5.gif",
+      "arclist/52.gif",
+      "arclist/26.gif",
+      "arclist/56.gif",
+      "arclist/22.gif",
+      "arclist/19.gif",
+      "arclist/25.gif",
+      "arclist/38.gif",
+      "arclist/63.gif",
+      "arclist/48.gif",
+      "arclist/44.gif",
+      "js/jquery.min.js",
+      "arclist/16.gif",
+      "arclist/29.gif",
+      "arclist/34.gif",
+      "arclist/43.gif",
+      "arclist/70.gif",
+      "arclist/14.gif",
+      "arclist/8.gif",
+      "arclist/27.gif",
+      "arclist/2.gif",
+      "arclist/59.gif",
+      "arclist/1.gif",
+      "arclist/24.gif",
+      "arclist/50.gif",
+      "arclist/3.gif",
+      "arclist/23.gif",
+      "arclist/9.gif",
+      "arclist/46.gif",
+      "arclist/54.gif",
+      "css/reset.css",
+      "js/mui.min.js",
+      "imgs/infor-1.png",
+      "imgs/banner.png",
+      "css/imagePreview.css",
+      "js/mui.previewimage.js",
+      "js/mui.zoom.js",
+      "fonts/iconfont-nodata.ttf",
+      "icon/back-arrow.png",
+      "icon/load2.gif",
+      "imgs/default-person.png"
+    ],
+    "refer": []
+  },
+  "myclinic/clinic.html": {
+    "resources": [
+      "imgs/medical-2.png",
+      "imgs/infor-3.png",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "css/mui.min.css",
+      "imgs/medical-1.png",
+      "js/mui.zoom.js",
+      "css/imagePreview.css",
+      "js/mui.previewimage.js",
+      "css/pullRefresh.css",
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "fonts/mui.ttf",
+      "css/iconfont-state.css",
+      "fonts/iconfont-state.ttf",
+      "imgs/60x60.gif",
+      "js/mui.lazyload.js",
+      "js/mui.lazyload.img.js",
+      "fonts/iconfont-nodata.ttf",
+      "imgs/default-record.png",
+      "js/mui.extend.js"
+    ],
+    "refer": [
+      "myclinic/infoaskDetail.html",
+      "myclinic/bookDetail.html",
+      "myclinic/askAndAnwserDetail.html"
+    ]
+  },
+  "myclinic/infoaskDetail.html": {
+    "resources": [
+      "imgs/medical-2.png",
+      "imgs/infor-3.png",
+      "js/common.js",
+      "js/mui.zoom.js",
+      "css/imagePreview.css",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.previewimage.js",
+      "imgs/medical-1.png"
+    ],
+    "refer": []
+  },
+  "myclinic/bookDetail.html": {
+    "resources": [
+      "imgs/process-body.png",
+      "imgs/process-body-last.png",
+      "imgs/medical-record-3.png",
+      "imgs/medical-record-2.png",
+      "imgs/process-header.png",
+      "imgs/medical-record-1.png",
+      "css/imagePreview.css",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js",
+      "js/common.js",
+      "js/zepto.min.js",
+      "css/book_detail.css",
+      "css/detail_common.css",
+      "fonts/iconfont-nodata.ttf"
+    ],
+    "refer": []
+  },
+  "myclinic/onlineaskDetail.html": {
+    "resources": [
+      "imgs/process-body.png",
+      "fonts/mui.ttf",
+      "imgs/process-body-last.png",
+      "imgs/medical-record-3.png",
+      "imgs/medical-record-2.png",
+      "imgs/process-header.png",
+      "imgs/medical-record-1.png",
+      "js/common.js",
+      "css/imagePreview.css",
+      "js/mui.zoom.js",
+      "css/common.css",
+      "js/mui.min.js",
+      "js/zepto.min.js",
+      "css/mui.min.css",
+      "js/mui.previewimage.js",
+      "fonts/iconfont-nodata.ttf",
+      "js/jscomon.js"
+    ],
+    "refer": []
+  },
+  "myclinic/askAndAnwserDetail.html": {
+    "resources": [
+      "imgs/medical-2.png",
+      "imgs/infor-3.png",
+      "css/imagePreview.css",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "imgs/medical-1.png",
+      "js/common.js",
+      "js/mui.zoom.js",
+      "js/zepto.min.js",
+      "js/mui.previewimage.js",
+      "css/askAndAnwserDetail.css",
+      "css/detail_common.css"
+    ],
+    "refer": []
+  },
+  "mynews/newsdetail.html": {
+    "resources": [
+      "imgs/infor-detail-1.png",
+      "css/iconfont-share.css",
+      "imgs/infor-detail-2.png",
+      "fonts/iconfont-share.ttf",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/common.js",
+      "js/zepto.min.js",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "js/jscomon.js",
+      "fonts/iconfont-nodata.ttf",
+      "js/clipboard.min.js"
+    ],
+    "refer": []
+  },
+  "mycenter/myinfo.html": {
+    "resources": [
+      "imgs/medical-add.png",
+      "imgs/medical-2.png",
+      "imgs/medical-1.png",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "mycenter/mywallet.html",
+      "mycenter/mylove.html",
+      "mycenter/aboutus.html",
+      "js/mui.picker.min.js",
+      "js/mui.poppicker.js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.min.css",
+      "js/jscomon.js",
+      "imgs/60x60.gif",
+      "css/imagePreview.css",
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js",
+      "imgs/banner.png",
+      "imgs/default-person.png"
+    ],
+    "refer": [
+      "mycenter/mywallet.html",
+      "mycenter/mylove.html",
+      "mycenter/aboutus.html"
+    ]
+  },
+  "mycenter/getmoney.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.picker.min.js",
+      "js/mui.poppicker.js",
+      "css/mui.poppicker.css",
+      "css/mui.picker.min.css",
+      "js/city.data-3.js"
+    ],
+    "refer": []
+  },
+  "mycenter/mypayrecord.html": {
+    "resources": [
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.pullToRefresh.material.min.js",
+      "mycenter/mypayrecord.html",
+      "css/pullRefresh.css",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mycenter/template.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "mysetting/template-setting.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "js/zepto.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "guide.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/common.js",
+      "imgs/default-record.png",
+      "imgs/guidance-1.png",
+      "imgs/guidance-2.png",
+      "imgs/guidance-3.png"
+    ],
+    "refer": []
+  },
+  "myclinic/medicalDetail.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.zoom.js",
+      "css/imagePreview.css",
+      "js/mui.min.js",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.previewimage.js",
+      "css/detail_common.css"
+    ]
+  }
+}

@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>问诊详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<style>
+			#feedBack::-webkit-input-placeholder{
+				color: #000000;
+			}
+			.fonts-num{
+				text-align: right;
+				margin-right: 5%;
+				color: #999999;
+			}
+			.case-list{
+				border: 1px solid #DDDDDD;
+				margin: 10px 15px;
+				padding: 15px 10px 0 10px;
+			}
+			.case-detail{
+				border-top: 1px solid #DDDDDD;
+				padding: 10px 0;
+				margin: 10px 0 0 0;
+				font-size: 12px;
+				color: #666666;
+			}
+			.case-detail p{
+				font-size: 12px;
+				color: #666666;
+			}
+			.mui-row label{
+				text-align: right;
+			}
+			.mui-row span{
+				padding-left: 10px;
+			}
+			.clinicRecord{
+				margin: 10px 0px;
+				font-size: 13px;
+				color: #333333;
+				border-bottom: 1px solid #DDDDDD;
+				padding:0 0 8px 15px;
+			}
+			.case-title{
+				font-size: 15px;
+				color: #32A3D6;
+			}
+			.case-detail-sex{
+				font-size: 12px;
+				color: #666666;
+				float: right;
+			}
+			.divider{
+				height: 10px;
+				background-color: #f6f6f6;
+			}
+			
+			.view-item .cell {
+				position: relative;
+				font-size: 14px;
+				color: rgba(0, 0, 0, .5);
+			    left: 17px;
+			}
+			.cell .pic {
+		        position: absolute;
+			    left: -25px;
+			    top: 2px;
+			}
+			.view-item {
+				padding: 8px 15px 15px;
+				position: relative;
+				border-top: 0px;
+			}
+			
+			.record-img{
+			    margin-top: 15px;
+			}
+			.record-img img {
+				width: 60px;
+				max-height: 60px;
+				margin-right: 10px;
+			}
+			.mui-ellipsis{
+				font-size: 12px;
+				color: #999999;
+				margin-top: 15px;
+			}
+			.status{
+				color: #32A3D6;
+				font-size: 12px;
+				margin-left: 18px;
+			}
+			.cell-body{
+				margin-top: 42px;
+			}
+			.cell-body .pic{
+			    left: -21px !important;
+			    top: 6px;
+			}
+			.mui-row.detail .case-title{
+				padding-left: 0px !important;
+			}
+			.mui-row.detail .case-detail-sex{
+				text-align: right;
+			}
+			.next .mui-btn-green {
+			    width: 75%;
+			    font-size: 16px;
+			    height: 32px;
+			    margin: 0px 0 6px 0;
+			}
+			textarea{
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">问诊详情</h1>
+		</header>			
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white">
+			<div class="mui-scroll">
+				<div class="case-list">
+					<div class="mui-row detail">
+						<span class="case-title mui-col-xs-6"><span id="title"></span>的在线问诊</span>
+						<span class="case-detail-sex mui-col-xs-6">性别:<span id="sex">-</span> &ensp;年龄:<span id="age">-</span></span>
+					</div>
+					<div class="case-detail mui-row">
+						<label class="mui-col-xs-3">就诊人:</label><span id="askNickname" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">过敏史:</label><span id="allergyHistory" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">诊断:</label><span id="result" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">分期:</label><span id="stages" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">手机号:</label><span id="askTelephone" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">基本病情:</label>
+						<span class="mui-col-xs-9">
+							<div id="situation">-</div>
+						</span>
+						<label class="mui-col-xs-3">病情概述:</label>
+						<span class="mui-col-xs-9">
+							<div id="askContent">-</div>
+						</span>
+						<label class="mui-col-xs-3">沟通时长:</label><span id="phoneTimeLen" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">沟通时间:</label><span id="hopeCalldate" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">备注:</label><span class="mui-col-xs-9">
+							<textarea rows="5" id="docRemark"  readonly="readonly"></textarea>
+						</span>
+						<span id="subDisplay" class="mui-col-xs-12 next m-undisplay">
+							<button id="submitNote" type="button" class="mui-btn mui-btn-green">提交备注</button>
+						</span>
+					</div>
+				</div>
+				<div class="divider"></div>
+				<p class="clinicRecord">就诊记录</p>
+				<div id="det" class="cont view-item" >
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript" src="../js/jscomon.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll(), _.previewImage();
+			var id = null,
+			content = null,
+				pdata = {};
+			var detObj = doc.getElementById("det"),
+				titleObj = doc.getElementById("title"),
+				sexObj = doc.getElementById("sex"),
+				ageObj = doc.getElementById("age");
+			var askNicknameObj = doc.getElementById("askNickname"),
+				allergyHistoryObj = doc.getElementById("allergyHistory"),
+				stagesObj = doc.getElementById("stages"),
+				askTelephoneObj = doc.getElementById("askTelephone");
+			var phoneTimeLenObj = doc.getElementById("phoneTimeLen"),
+				hopeCalldateObj = doc.getElementById('hopeCalldate'),
+				situationObj = doc.getElementById("situation"),
+				askContentObj = doc.getElementById("askContent");
+			var resultObj = doc.getElementById("result"),
+				docRemarkObj = doc.getElementById("docRemark");
+				var subDisplayObj =  doc.getElementById('subDisplay');
+			//页面显示之后
+			w.addEventListener("event",function(e){
+				//页面重新置顶
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				id = e.detail.id;
+				if(e.detail.state && e.detail.state == 2){
+					docRemarkObj.setAttribute("readonly","readonly");
+					u.addClass(subDisplayObj,"m-undisplay");
+				}else{
+					docRemarkObj.removeAttribute("readonly");
+					u.removeClass(subDisplayObj,"m-undisplay");
+				}
+				pdata.id = id;
+				pdata.privateToken = w.getUser();
+				// 请求数据  获取问诊详情
+				u.mypost("doctor_center/getOnlineDiaDetail",pdata,true,function(data){
+					if(data.code == 0){
+						data = data.data;
+						var imgServer = data.imgServer;
+						var detail = data.detail;
+						titleObj.innerHTML = detail.username ||'无';
+						sexObj.innerHTML = detail.sex ||'无';
+						ageObj.innerHTML = detail.age ||'无';
+						allergyHistoryObj.innerHTML = detail.allergyHistory ||'无';
+						askNicknameObj.innerHTML = detail.askNickname ||'无';
+						resultObj.innerHTML = detail.result ||'无';
+						if("0" == detail.stages){
+							doc.getElementById("stages").innerHTML = '无';
+						}else if("1" == detail.stages){
+							doc.getElementById("stages").innerHTML = 'Ⅰ期';
+						}else if("2" == detail.stages){
+							doc.getElementById("stages").innerHTML = 'Ⅱ期';
+						}else if("3" == detail.stages){
+							doc.getElementById("stages").innerHTML = 'Ⅲ期';
+						}else if("4" == detail.stages){
+							doc.getElementById("stages").innerHTML = 'Ⅳ期';
+						}
+						askTelephoneObj.innerHTML = detail.askTelephone ||'无';
+						phoneTimeLenObj.innerHTML = detail.phoneTimeLen +'分钟' ||'无';
+						hopeCalldateObj.innerHTML = detail.hopeCalldate ||'无';
+						askContentObj.innerHTML = detail.askContent ||'无';
+						situationObj.innerHTML =detail.situation || '无';
+						docRemarkObj.value = detail.docRemark || '';
+						if(data.remark && data.remark.length > 0){
+							detObj.innerHTML = '';
+							var item = null,src = null,len = data.remark.length,imgs = null,imgHtml = null;
+							_.each(data.remark,function(i,o){
+								imgHtml = "";
+								imgs = o.img;
+								item = doc.createElement("div");
+								if(0 == i){
+									src = "../imgs/process-header.png";
+									item.className = "cell";
+								}else if( i < len - 1){
+									src = "../imgs/process-body.png"
+									item.className = "cell cell-body";
+								}else{
+									src = "../imgs/process-body-last.png"
+									item.className = "cell cell-body";
+								}
+								if(imgs){
+									if(imgs.img1){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img1+"' />";
+									}
+									if(imgs.img2){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img2+"' />";
+									}
+									if(imgs.img3){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img3+"' />";
+									}
+								}
+								item.innerHTML = "<img src='"+src+"' class='pic' />"+
+											"<span class='mui-ellipsis'>"+(o.visitDate || '')+"</span><span class='status'>"+(o.stage || '')+"</span>"+
+											"<p class='mui-ellipsis'>"+(o.content || '')+"</p>"+
+											"<div class='record-img'>"+imgHtml+
+											"</div>";
+								detObj.appendChild(item);
+							});
+						}else{
+							detObj.innerHTML = nodataHtmlInfo;
+						}
+					}
+				},myerror);
+			});
+			
+			//提交备注  
+			doc.getElementById("submitNote").addEventListener("tap",function(){
+				pdata.content = docRemarkObj.value;
+				u.mypost("doctor_center/commitRemark",pdata,true,function(data){
+					if(data.code == 0){
+						_.toast("提交成功");
+						var indexWeb = plus.webview.getWebviewById("mymain/main.html");
+						var infolistWeb = plus.webview.getWebviewById("infolist");
+						//首页
+						if(indexWeb) {
+							indexWeb.evalJS("loadList()");
+							indexWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)");                     
+						}
+						if(infolistWeb) {
+							infolistWeb.evalJS("refreshData();");
+							infolistWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)"); 
+						}
+					}
+				},myerror);
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

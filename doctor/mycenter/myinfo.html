@@ -1,0 +1,471 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>个人信息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/myinfo.css" />
+	</head>
+	<body>
+		<header id="header" class="header mui-bar mui-bar-nav">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">个人信息</h1>
+			<a id="edit" class="mui-btn mui-btn-link mui-pull-right">修改</a>
+		</header>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div style="width: 60px;margin: 5px auto 0;">
+					<img id='avatar' src="../imgs/default-person.png" data-preview-src='' data-preview-group='2' style="border-radius: 40px;width: 60px;height: 60px;"/>
+				</div>
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+				        <label>姓名</label>
+					        <input dis type="text" maxlength="18"  value=""  disabled="disabled" id="nickname">
+					        <a class="mui-navigate-right m-undisplay"></a>
+					    </div>
+				    <div id="sex_1" class="mui-input-row mui-radio m-undisplay">
+				        <label>性别</label>
+				        <input id="man" class="m-undisplay" dis type="radio" value="1" name="sex" style="right: 95px;" disabled="disabled" checked="checked"/>
+				    	    <span class="radio1">男</span>
+				        <input id="women" class="m-undisplay" dis type="radio" value="2" name="sex" style="right: 42px;" disabled="disabled"/>
+	                        <span class="radio2">女</span>
+				    </div>
+				     <div id="sex_2" class="mui-input-row">
+			        	<label>性别</label>
+			       		<input id="sex_input" dis type="text" value=""  disabled="disabled">
+			        </div>
+			        <div class="mui-input-row">
+			        	<label>出生日期</label>
+			       		<input id="birthday" dis type="text" value=""  disabled="disabled" readonly="readonly">
+			       		<a class="mui-navigate-right m-undisplay"></a>
+			        </div>
+				     <div class="mui-input-row">
+				        <label>电话1</label>
+				        <input dis type="tel" maxlength="18" value=""  disabled="disabled" id="phoneF">
+				        <a class="mui-navigate-right  m-undisplay"></a>
+				    </div>
+				     <div class="mui-input-row">
+				        <label>电话2</label>
+				        <input dis type="tel"  maxlength="18" value="" disabled="disabled" id="phoneSec">
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				      <div class="mui-input-row">
+				        <label>所属医院</label>
+				        <input dis type="text" value=""  disabled="disabled" id="hosName" readonly="readonly">
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <div class="mui-input-row">
+				        <label>科室</label>
+				        <input dis type="text" value=""  disabled="disabled" id="officeName" readonly="readonly">
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <div class="mui-input-row">
+				        <label>职位</label>
+				        <input dis type="text" value=""  disabled="disabled" id="docLevel">
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <div class="mui-input-row">
+				        <label>所获学位</label>
+				        <input dis type="text" value=""  disabled="disabled" id="degree">
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				     <div id="summaryDiv1" class="mui-input-row a2">
+				        <label>简介</label>
+				       	<div class="hideDiv" name="detail" id="summaryDiv"></div>
+				       	<a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <div id="summaryDiv2" class="mui-input-row a2 m-undisplay">
+				        <label>简介</label>
+				       	<textarea  name="detail" maxlength="4500" rows="300" id="summary"></textarea>
+				       	<a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <div id="goodAtDiv1" class="mui-input-row a2">
+				        <label>擅长</label>
+				      	<div class="hideDiv" name="skilled" maxlength="4500"  id="goodAtDiv"></div>
+				      	<a class="mui-navigate-right m-undisplay"></a>
+			      	</div>
+			        <div id="goodAtDiv2" class="mui-input-row a2 m-undisplay">
+				        <label>擅长</label>
+				      	<textarea  name="skilled" maxlength="4500" rows="300"  id="goodAt"></textarea>
+				      	<a class="mui-navigate-right m-undisplay"></a>
+			      	</div>
+				    <div class="mui-input-row a2" style="height: auto;">
+				        <label>证书</label>
+				        <div id="certificateImg" style="margin-bottom: 33px;">
+				        	<img id='img1' addindex ='1' class='add-img add' src='../imgs/medical-add.png' />
+				        	<img id='img2' addindex ='2' class='add-img add' src='../imgs/medical-add.png' />
+				        	<img id='img3' addindex ='3' class='add-img add' src='../imgs/medical-add.png' />
+				        	<img id='img4' addindex ='4' class='add-img add' src='../imgs/medical-add.png' />
+				        	<img id='img5' addindex ='5' class='add-img add' src='../imgs/medical-add.png' />
+				        	<img id='img6' addindex ='6' class='add-img add' src='../imgs/medical-add.png' />
+				        </div>
+				        <a class="mui-navigate-right m-undisplay"></a>
+				    </div>
+				    <p style="font-size: 12px;margin-top: -25px;text-align: center;">证书最多上传6张，可不上传</p>
+				</form>
+			</div>
+		</div>
+	</body>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+<script type="text/javascript" src="../js/mui.previewimage.js"></script>
+<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+<script type="text/javascript" src="../js/mui.poppicker.js" ></script>
+<script type="text/javascript" src="../js/jscomon.js" ></script>
+<script type="text/javascript" src="../js/common.js" ></script>
+<script type="text/javascript">
+	(function(_,doc,u,w){
+		var editTxt = "修改",finishTxt = "保存",isEditing = false,imgServer =null;
+		var hospitalList = null,officeList = null,hosId = null,officeId=null;
+		var officePicker = null,hospicker = null;
+		var aList = doc.querySelectorAll(".mui-navigate-right");
+		_.init({swipeBack:true,gestureConfig:{longtap:true}}),_(".mui-scroll-wrapper").scroll();
+		var nicknameObj = doc.getElementById("nickname");
+		var birthdayObj = doc.getElementById("birthday");
+		var phoneFObj = doc.getElementById("phoneF");
+		var phoneSecObj = doc.getElementById("phoneSec");
+		var hosNameObj = doc.getElementById("hosName");
+		var officeNameObj = doc.getElementById("officeName");
+		var docLevelobj = doc.getElementById("docLevel");
+		var degreeObj = doc.getElementById("degree");
+		var summaryObj = doc.getElementById("summary");
+		var summaryDivObj = doc.getElementById("summaryDiv");
+		var goodAtObj = doc.getElementById("goodAt");
+		var certificateImgObj = doc.getElementById("certificateImg");
+		var manObj = doc.getElementById("man");
+		var womenObj = doc.getElementById("women");
+		var sex_inputObj = doc.getElementById("sex_input");
+		var avatarObj = doc.getElementById("avatar"),selectedObj = null,certificateImg = null;
+		_.plusReady(function(){
+			plus.webview.currentWebview().setStyle({popGesture:'hide'});
+			var privateToken = w.getUser();
+			var pdata ={
+				privateToken:privateToken
+			}
+			var docInfo = null;
+			//获取医生个人信息
+			u.mypost("doctor_center/docInfo",pdata,true,function(data){
+				if(data.code == 0){
+					docInfo = data.data.info[0];
+					certificateImg = docInfo.certificateImg;
+					imgServer = data.data.imgServer;
+					avatarObj.setAttribute("src",""!=docInfo.avatar?imgServer+docInfo.avatar:'../imgs/default-person.png');
+					nicknameObj.value = docInfo.nickname;
+					birthdayObj.value = docInfo.birthday?docInfo.birthday.substr(0,10):'---- ----';
+					phoneFObj.value = docInfo.phoneF;
+					phoneSecObj.value = docInfo.phoneSec;
+					hosNameObj.value = docInfo.hosName;
+					officeNameObj.value = docInfo.officeName;
+					docLevelobj.value = docInfo.docLevel;
+					summaryObj.textContent = docInfo.summary;
+					summaryDivObj.innerHTML = docInfo.summary;
+					goodAtObj.textContent = docInfo.goodAt;
+					doc.getElementById("goodAtDiv").innerHTML = docInfo.goodAt;
+					degreeObj.value = docInfo.degree;
+					sex_inputObj.value = docInfo.sex;
+					selectedObj =  docInfo.sex == "男" ? manObj:womenObj;
+					selectedObj.setAttribute("checked","checked");
+					if(certificateImg){
+						if(certificateImg.img1){
+							doc.getElementById("img1").setAttribute("src",imgServer+certificateImg.img1);
+							doc.getElementById("img1").setAttribute("certificateImg",certificateImg.img1);
+							removeClass(doc.getElementById("img1"),"add");
+							doc.getElementById("img1").setAttribute("data-preview-src","");
+							doc.getElementById("img1").setAttribute("data-preview-group",'1');
+						}
+						if(certificateImg.img2){
+							doc.getElementById("img2").setAttribute("src",imgServer+certificateImg.img2);
+							doc.getElementById("img2").setAttribute("certificateImg",certificateImg.img2);
+							removeClass(doc.getElementById("img2"),"add");
+							doc.getElementById("img2").setAttribute("data-preview-src","");
+							doc.getElementById("img2").setAttribute("data-preview-group",'1');
+						}
+						if(certificateImg.img3){
+							doc.getElementById("img3").setAttribute("src",imgServer+certificateImg.img3);
+							doc.getElementById("img3").setAttribute("certificateImg",certificateImg.img3);
+							removeClass(doc.getElementById("img3"),"add");
+							doc.getElementById("img3").setAttribute("data-preview-src","");
+							doc.getElementById("img3").setAttribute("data-preview-group",'1');
+						}
+						if(certificateImg.img4){
+							doc.getElementById("img4").setAttribute("src",imgServer+certificateImg.img4);
+							doc.getElementById("img4").setAttribute("certificateImg",certificateImg.img4);
+							removeClass(doc.getElementById("img4"),"add");
+							doc.getElementById("img4").setAttribute("data-preview-src","");
+							doc.getElementById("img4").setAttribute("data-preview-group",'1');
+						}
+						if(certificateImg.img5){
+							doc.getElementById("img5").setAttribute("src",imgServer+certificateImg.img5);
+							doc.getElementById("img5").setAttribute("certificateImg",certificateImg.img5);
+							removeClass(doc.getElementById("img5"),"add");
+							doc.getElementById("img5").setAttribute("data-preview-src","");
+							doc.getElementById("img5").setAttribute("data-preview-group",'1');
+						}
+						if(certificateImg.img6){
+							doc.getElementById("img6").setAttribute("src",imgServer+certificateImg.img6);
+							doc.getElementById("img6").setAttribute("certificateImg",certificateImg.img6);
+							removeClass(doc.getElementById("img6"),"add");
+							doc.getElementById("img6").setAttribute("data-preview-src","");
+							doc.getElementById("img6").setAttribute("data-preview-group",'1');
+						}
+					}
+				}
+			},myerror);
+			//编辑或是保存
+			doc.getElementById("edit").addEventListener("tap",function(){
+				var imgDom = null;
+					imgDom = certificateImgObj.querySelectorAll(".add-img.update");
+				var self = this;
+				var dislist = doc.querySelectorAll("[dis]");
+				if(self.textContent == editTxt){
+					avatarObj.removeAttribute("data-preview-src");
+					avatarObj.removeAttribute("data-preview-group");
+					u.removeClass(doc.getElementById("sex_1"),'m-undisplay');
+					u.addClass(doc.getElementById("sex_2"),'m-undisplay');
+					u.removeClass(doc.getElementById("summaryDiv2"),'m-undisplay');
+					u.addClass(doc.getElementById("summaryDiv1"),'m-undisplay');
+					u.removeClass(doc.getElementById("goodAtDiv2"),'m-undisplay');
+					u.addClass(doc.getElementById("goodAtDiv1"),'m-undisplay');
+					for (var i = 0; i < aList.length; i++) {
+						u.removeClass(aList[i],'m-undisplay');
+					}
+					//获取可选的所属医院和科室
+					u.mypost("doctor_center/docEditInfoView",pdata,true,function(data){
+						if(data.code == 0){
+							hosId = data.data.info[0].HosId;
+							officeId = data.data.info[0].officeId;
+							hospitalList = data.data.hospital;
+							officeList = data.data.office;
+						}
+					},myerror);
+					this.textContent = finishTxt;
+					isEditing = true;
+					for (var i = 0; i < dislist.length; i++) {
+						dislist[i].removeAttribute("disabled");
+					}
+				}else{
+					//保存
+					document.activeElement.blur();
+					avatarObj.setAttribute("data-preview-src","");
+					avatarObj.setAttribute("data-preview-group","2");
+					//检查电话1
+					if(phoneFObj.value && (!u.checkPhone(phoneFObj.value)) && (!u.checkCall(phoneFObj.value))){
+						_.toast("请正确输入电话1");
+						return;
+					}
+					//检查电话2
+					if(phoneSecObj.value && (!u.checkPhone(phoneSecObj.value)) && (!u.checkCall(phoneSecObj.value))){
+						_.toast("请正确输入电话2");
+						return;
+					}
+					//检查科室
+					if(u.isNull(officeNameObj.value)){
+						_.toast("请选择科室");
+						return;
+					}
+					var sexVal = 1;//性别
+					var sexObj = doc.getElementsByName('sex');
+					for (var i = 0; i < sexObj.length; i++) {
+						if(sexObj[i].checked){
+							sexVal = sexObj[i].value;
+						}
+					}
+					w.showWaiting();
+					//保存信息
+					var task = gettask('doctor_center/docInfoEdit', function(t, status) {
+						if(status == 200){
+							_('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+							var data = JSON.parse(t.responseText || '{}');
+							_.toast(data.msg);
+							self.textContent = editTxt;
+							isEditing = false;
+							for (var i = 0; i < dislist.length; i++) {
+								dislist[i].setAttribute("disabled","disabled");
+							}
+							for (var i = 0; i < aList.length; i++) {
+								u.addClass(aList[i],'m-undisplay');
+							}
+							summaryDivObj.innerHTML = summaryObj.value;
+							doc.getElementById("goodAtDiv").innerHTML = goodAtObj.value;
+							sex_inputObj.value = sexVal == 1?'男':'女';
+							u.removeClass(doc.getElementById("sex_2"),'m-undisplay');
+							u.addClass(doc.getElementById("sex_1"),'m-undisplay');
+							u.removeClass(doc.getElementById("summaryDiv1"),'m-undisplay');
+							u.addClass(doc.getElementById("summaryDiv2"),'m-undisplay');
+							u.removeClass(doc.getElementById("goodAtDiv1"),'m-undisplay');
+							u.addClass(doc.getElementById("goodAtDiv2"),'m-undisplay');
+						}else{
+							_.toast("保存失败，请重试");
+						}
+						w.closeWaiting();
+					});
+					task.addData('privateToken', privateToken);
+					task.addData('token',token);
+					task.addData('name', nicknameObj.value);
+					task.addData('sex', sexVal);
+					task.addData('birthday', birthdayObj.value);
+					task.addData('telFrt', phoneFObj.value);
+					task.addData('telSed', phoneSecObj.value);
+					task.addData('hosId', hosId);
+					task.addData('officeId', officeId);
+					task.addData('docLevel',docLevelobj.value);
+					task.addData('degree', degreeObj.value);
+					task.addData('summary', summaryObj.value);
+					task.addData('goodAt', goodAtObj.value);
+					if(imgDom && imgDom.length > 0){
+						for (var i = 0; i < imgDom.length; i++) {
+							//上传被操作的图片
+							if(imgDom[i].className =='add-img update'){
+								task.addFile(imgDom[i].src,{key:imgDom[i].id});
+							}
+						}
+					}
+					task.start();
+				}
+			});
+			//更新头像
+			avatarObj.addEventListener("tap",function(){
+				var self = this;
+				if(isEditing){
+					plus.nativeUI.actionSheet({cancel:"取消",buttons:[{title:"拍照上传"},{title:"相册选择"}]}, function(e){
+						if(e.index == 0) return;
+						if(e.index == 1){
+							var cmr = plus.camera.getCamera();
+								cmr.captureImage( function (p) {
+									plus.io.resolveLocalFileSystemURL(p,function(entry){
+										//上传图片
+										avatarUpload(entry.toLocalURL());
+									},function (e) {
+										mui.toast("读取拍照文件错误");
+									});
+								},function (e){
+									console.log( "失败："+e.message );
+								},{filename:"_doc/camera/",index:1} );
+						}else if(e.index == 2){
+							plus.gallery.pick(function(p){
+								avatarUpload(p);
+							},{
+								filter:"image",multiple:false
+							})
+						}
+					});
+				}
+			});
+			
+			/**
+			 * @description上传头像
+			 * @param avatar 图片路径
+			 * */
+			function avatarUpload(avatar){
+				w.showWaiting();
+				var task = gettask('user_center/avatarUpload', function(t, status) {
+					if(status == 200){
+						var data = JSON.parse(t.responseText || '{}');
+						_.toast(data.msg || '上传成功');
+						avatarObj.src = avatar;
+					}else{
+						_.toast("保存失败，请重试");
+					}
+					w.closeWaiting();
+				});
+				task.addData('token', token);
+				task.addData('privateToken', privateToken);
+				plus.zip.compressImage({
+					src:avatar,dst:'_doc/temp.jpg',width:'50%',overwrite:true
+				},function(even){
+					task.addFile(even.target, {key: 'avatar'});
+					task.start();
+				},function(error){
+					console.log("error========="+JSON.stringify(error));
+				});
+			}
+			
+			//添加+
+			_(doc).on("tap",".add-img.add",function(){
+				var addindex = this.getAttribute("addindex");
+				if(isEditing){
+					u.upImg(this,1,addindex);
+				}
+			});
+			//长按删除所选图片
+			_("#certificateImg").on("longtap",".add-img",function(){
+				var self = this;
+				if(isEditing){
+					plus.nativeUI.confirm("确定移除所选图片吗",function(e){
+						if(0 == e.index){
+							if(self.getAttribute("certificateImg")){
+								var pdata = {
+									privateToken:privateToken,
+									imgKey:self.id,
+									imgValue:self.getAttribute("certificateImg")
+								}
+								u.mypost("doctor_center/delImg",pdata,true,function(data){
+									if(data.code == 0){
+										_.toast("删除成功");
+									}else{
+										_.toast("操作失败，请重试");
+									}
+								},myerror);
+							}
+							self.removeAttribute("data-preview-src");
+							self.removeAttribute("data-preview-group");
+							self.className = "add-img add";
+							self.src = "../imgs/medical-add.png";
+						}
+					},"警告",['确定','取消']);
+				}
+			})
+			//选择日期
+			doc.getElementById("birthday").addEventListener("tap",function(){
+				if(isEditing){
+					u.choseDate(this);//选择出生日期
+				}
+			});
+			//选择医院
+			doc.getElementById("hosName").addEventListener("tap",function(){
+				//初始化医院选项
+				hospicker?'':hospicker = new _.PopPicker();
+				officePicker?officePicker.hide():'';
+				if(isEditing){
+					if(hospitalList && hospitalList.length > 0){
+						hospicker.setData(hospitalList);//设置选择项内容
+					}
+					hospicker.show(function(items) {
+						hosId = items[0].hid;
+						hosNameObj.value = items[0].name;
+					});
+				}
+			});
+			//选择科室
+			doc.getElementById("officeName").addEventListener("tap",function(){
+				//初始化医院选项
+				officePicker?'':officePicker = new _.PopPicker();
+				hospicker?hospicker.hide():'';
+				if(isEditing){
+					if(officeList && officeList.length > 0){
+						officePicker.setData(officeList);//设置选择项内容
+					}
+					officePicker.show(function(items) {
+						officeId = items[0].officeId;
+						officeNameObj.value = items[0].officeName;
+					});
+				}
+			});
+		});
+		//图片预览
+		_.previewImage();
+		//监听滚动条的滚动事件 
+//		doc.querySelector(".mui-scroll-wrapper").addEventListener("scroll",function(){
+//			doc.activeElement.blur();
+//		});
+	})(mui,document,util,window)
+</script>
+</html>

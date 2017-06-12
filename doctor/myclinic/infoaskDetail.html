@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>留言详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<style>
+			textarea {
+				margin: 5px 5% 8px;
+				font-size: 12px;
+				color: #999;
+				width: 90%;
+				border-radius: 5px;
+				padding: 15px;
+			}
+			
+			#feedBack::-webkit-input-placeholder {
+				color: #999999;
+			}
+			
+			.fonts-num {
+				text-align: right;
+				margin-right: 5%;
+				color: #999999;
+			}
+			
+			.next .mui-btn.mui-btn-green {
+				margin: 10px 5%;
+				width: 90%;
+			}
+			
+			.case-list {
+				border: 1px solid #DDDDDD;
+				margin: 10px 15px;
+				padding: 15px 10px;
+			}
+			
+			.case-detail {
+				border-top: 1px solid #DDDDDD;
+				padding: 10px 0;
+				margin: 10px 0;
+				font-size: 12px;
+				color: #666666;
+			}
+			
+			.case-detail p {
+				font-size: 12px;
+				color: #666666;
+			}
+			
+			.mui-row img {
+				padding-right: 5px;
+				max-height: 60px;
+				max-width: 50px;
+			}
+			
+			.mui-row label {
+				text-align: right;
+			}
+			
+			.mui-row span {
+				padding-left: 10px;
+			}
+			
+			.mui-row .mui-btn-mini {
+				line-height: 0.62;
+				font-size: 10px !important;
+				border-radius: 10px;
+				padding: 5px 11px;
+				position: absolute;
+				bottom: 0;
+				border: 1px solid #32A3D6;
+				color: #32A3D6;
+			}
+			
+			.undo {
+				margin: 10px 15px;
+				font-size: 13px;
+				color: #333333;
+			}
+			
+			.case-title {
+				font-size: 15px;
+				color: #32A3D6;
+			}
+			
+			.case-detail-sex {
+				font-size: 13px;
+				color: #666666;
+			}
+			
+			.money {
+				color: #32a3d6 !important;
+			}
+			
+			.mui-row.detail .case-title {
+				padding-left: 0px !important;
+			}
+			
+			.mui-row.detail .case-detail-sex {
+				text-align: right;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">留言详情</h1>
+		</header>			
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white">
+			<div class="mui-scroll">
+				<div class="case-list">
+					<div class="mui-row detail">
+						<span id="title" class="case-title mui-col-xs-6"></span>
+						<span class="case-detail-sex mui-col-xs-6">性别:<span id="sex"></span> &ensp;年龄:<span id="age"></span></span>
+					</div>
+					<div class="case-detail mui-row">
+						<label class="mui-col-xs-3">就诊人:</label><span id="name" class="mui-col-xs-9"></span>
+						<label class="mui-col-xs-3">基本病情:</label><span id="situation" class="mui-col-xs-9"></span>
+						<label class="mui-col-xs-3">询问问题:</label>
+						<span class="mui-col-xs-9">
+							<div id="askerContent"></div>
+							<div id="img" class="mui-row"></div>
+						</span>
+					</div>
+				</div>
+				<textarea id="feedBack" name="feedBack" maxlength="300" rows="8" cols="10" placeholder="输入正文"></textarea>
+				<div class="next">
+					<button id="submit" type="button" class="mui-btn mui-btn-green" disabled="disabled">回复</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll(),_.previewImage();
+			var pdata = {},imgs = null,imgServer = null;
+			var imgObj  =doc.getElementById("img"),titleObj = doc.getElementById("title"),nameObj = doc.getElementById("name"),ageObj = doc.getElementById("age"),sexObj = doc.getElementById("sex"),askerContentObj = doc.getElementById("askerContent");
+			var feedBackObj = doc.getElementById("feedBack");
+			var id = null,flag = null;
+			w.addEventListener("event",function(e){
+				pdata.privateToken = w.getUser();
+				id = e.detail.id;
+				flag = e.detail.flag || 0;
+				pdata.id = id;
+				pdata.state = 1;
+				u.mypost("doctor_center/leavingDetail",pdata,true,function(data){
+					imgServer = data.data.imgServer;
+					data = data.data.result[0];
+					imgs = data.img;
+					imgObj.innerHTML = "";
+					if(imgs){
+						feedBackObj.value = "";
+						if(imgs.img0){
+							imgObj.innerHTML += "<img data-preview-src='' data-preview-group='1'  src='"+imgServer+imgs.img0+"' />";
+						}
+						if(imgs.img1){
+							imgObj.innerHTML += "<img data-preview-src='' data-preview-group='1'  src='"+imgServer+imgs.img1+"' />";
+						}
+						if(imgs.img2){
+							imgObj.innerHTML += "<img data-preview-src='' data-preview-group='1'  src='"+imgServer+imgs.img2+"' />";
+						}
+						if(imgs.img3){
+							imgObj.innerHTML += "<img data-preview-src='' data-preview-group='1'  src='"+imgServer+imgs.img3+"' />";
+						}
+					}
+					titleObj.textContent = data.nickname+"的留言问诊";
+					nameObj.innerHTML = data.askerNickname || '无';
+					ageObj.innerHTML = data.age || '无';
+					sexObj.innerHTML = data.sex || '无';
+					askerContentObj.innerHTML = data.askerContent|| '无';
+					doc.getElementById("situation").innerHTML = data.situation || '无';
+				});
+			});
+			var submitObj  = doc.getElementById("submit");
+			_.plusReady(function(){
+				var priateToken =  w.getUser();
+//				/提交回复
+				doc.getElementById("submit").addEventListener("tap",function(){
+					pdata.privateToken = w.getUser();
+					pdata.id = id;
+					pdata.content = feedBackObj.value;
+					if(flag && '1' == flag){
+						pdata.flag = flag;
+					}
+					u.mypost("doctor_center/commitReply",pdata,true,function(data){
+						if(data.code == 0){
+							feedBackObj.value = "";
+							var indexWeb = plus.webview.getWebviewById("mymain/main.html");
+							var infolistWeb = plus.webview.getWebviewById("infolist");
+							var clinicWeb = plus.webview.getWebviewById("myclinic/clinic.html");
+							//首页
+							if(indexWeb) {
+								indexWeb.evalJS("loadList()");
+								indexWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)");                     
+							}
+							if(infolistWeb) {
+								infolistWeb.evalJS("refreshData();");
+								infolistWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)"); 
+							}
+							if(clinicWeb){
+								clinicWeb.evalJS("getUndoAskInfoList();");
+								clinicWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)");
+							}
+							_.confirm('回复成功','提示',["确 认"],function(e){
+								//返回上一个页面
+								_.toast("回复成功");
+								plus.webview.currentWebview().hide("none");
+							},'div'); 
+						}else{
+							_.toast(data.msg);
+						}
+					});
+				});
+				//监听回复内容的输入
+				feedBackObj.addEventListener("input",function(){
+					if(feedBackObj.value.length > 0){
+						submitObj.removeAttribute("disabled");
+					}else{
+						submitObj.setAttribute("disabled","disabled");
+					}
+				});
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

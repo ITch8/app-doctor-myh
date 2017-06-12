@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的收藏</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.main-font-color {
+				font-size: 16px;
+			}
+			
+			.mui-table-view-cell {
+				padding: 15px;
+			}
+			
+			.mui-table-view-cell:after {
+				left: 0;
+			}
+			
+			.mui-btn {
+				border-radius: 18px;
+				font-size: 10px !important;
+				line-height: 0.42;
+				padding: 6px;
+				border: 0 solid;
+			}
+			
+			.mui-media-object.mui-pull-left {
+				width: 70px;
+				height: 67px;
+			}
+			
+			.mui-table-view .mui-media-object {
+				max-width: 100px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 12px;
+				color: #999999;
+				padding-bottom: 5px;
+			}
+			
+			.mui-btn-blue {
+				background-color: #ccc;
+			}
+			
+			.mui-btn-green {
+				background-color: #8bc952;
+			}
+			
+			.mui-h5,
+			h5 {
+				color: #333333;
+				font-size: 15px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				padding-top: 0;
+			}
+			
+			.deleteIcon {
+				content: url(../imgs/del.png);
+				width: 20px;
+				height: 20px;
+				margin-top: 8px;
+			}
+			
+			.mui-table-view-cell>.mui-slider-right>.mui-btn {
+				border-left: 1px solid #c8c7cc;
+				padding: 0 22px;
+			}
+			
+			.deleteIconBg {
+				width: 35px;
+				height: 35px;
+				background-color: #F6F6F6;
+				border-radius: 18px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="loves" class="mui-scroll">
+				<ul id="loves_list" class="mui-table-view"></ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_, doc, u, w) {
+			_.init({
+				swipeBack: true,
+				gestureConfig: {
+					doubletap: true
+				}
+			}), _(".mui-scroll-wrapper").scroll();
+			_(doc).on("doubletap", ".mui-title", function() {
+				_(".mui-scroll-wrapper").scroll().scrollTo(0, 0, 200)
+			})
+			var list = doc.getElementById("loves_list");
+			var pdata = {
+					offset: 0,
+					limit: 5
+				},
+				page = 0;
+			_.plusReady(function() {
+				pdata.privateToken = w.getUser();
+				_pull = _('#loves').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('doctor_center/myCollections', pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data || []).length == 5);
+								if(data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), renderList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},
+					up: {
+						callback: function() {
+							pdata.offset = (pdata.limit) * page;
+							u.mypost('doctor_center/myCollections', pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.collections || []).length < 5);
+								if(data.code == 0) {
+									page++;
+									renderList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh((data.data.collections || []).length < 5);
+							});
+						},
+						auto: true
+					}
+				});
+			});
+
+			var btnhtml = null,
+				imgServer = null,
+				collections = null;
+			//列举数据
+			function renderList(data) {
+				console.log(JSON.stringify(data));
+				collections = data.collections;
+				imgServer = data.imgServer;
+				if(collections && collections.length > 0) {
+					_.each(collections, function(i, o) {
+						btnhtml = o.tag?"<button type='button' class='mui-btn mui-btn-blue'>"+o.tag+"</button>":"";
+						domItem = doc.createElement("li");
+						domItem.id = o.nid;
+						domItem.className = "mui-table-view-cell mui-media";
+						domItem.innerHTML = "<div class='mui-slider-right mui-disabled'>" +
+							"<a id=" + o.collId + " class='mui-btn'>" +
+							"<div class='deleteIconBg'><span class='deleteIcon'></span></div>" +
+							"</a>" +
+							"</div>" +
+							"<div class='mui-slider-handle'>" +
+							"<img class='mui-media-object mui-pull-left' src='" + imgServer + o.thumbnail + "'>" +
+							"<div class='mui-media-body'>" +
+							"<h5>" + o.title + "</h5>" +
+							"<div class='mui-ellipsis'>时间:&ensp;" + o.dateline + "</div>" +
+							btnhtml + "</div></div>";
+						list.appendChild(domItem);
+					});
+				}
+			}
+
+			//打开详情
+			_(doc).on("tap", ".mui-table-view-cell.mui-media", function() {
+				var ex = {
+					nid: this.id,
+					collId: this.querySelector("a").id
+				}
+				w.openView("../mynews/newsdetail.html", ex);
+			})
+
+			//删除收藏
+			_(doc).on("tap", ".mui-btn", function() {
+				pdata.collId = this.id;
+				var self = this;
+				var btnArray = ['确认', '取消'];
+				var liNode = self.parentNode.parentNode;
+				_.confirm('确认删除该条记录？', '名医肿瘤科', btnArray, function(e) {
+					if(e.index == 0) {
+						u.mypost('user_center/delCollection', pdata, false, function(data) {
+							if(data.code == 0) {
+								liNode.parentNode.removeChild(liNode);
+								_.toast("已删除");
+							} else {
+								_.toast(data.msg || '服务器异常');
+							}
+						}, myerror);
+					} else {
+						_.swipeoutClose(liNode)
+					}
+				});
+			})
+		})(mui, document, util, window)
+	</script>
+</html>

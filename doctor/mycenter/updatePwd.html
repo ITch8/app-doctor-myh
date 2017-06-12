@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>修改密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-input-group .mui-input-row:after {
+				left: 0;
+			}
+			.mui-scroll {
+				width: 86%;
+				margin: 0 7%;
+			}
+			.mui-input-group {
+				margin: 30px 0 15px 0;
+			}
+			.mui-input-group input,
+			.mui-input-group .mui-input-row {
+				height: 50px;
+			    padding: 0 20px 0 0;
+			}
+			.mui-input-group:before {
+				height: 0;
+			}
+			.mui-icon.mui-icon-clear {
+				top: 14px !important;
+			}
+			.mui-row {
+				color: #999;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white">
+			<div class="mui-scroll">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+				        <input id="oldPwd" type="password" class="mui-input-clear" placeholder="请输入原密码" value="">
+				    </div>
+				    <div class="mui-input-row">
+				        <input id="newPwd" type="password" class="mui-input-clear" placeholder="请输入新密码" value="">
+				    </div>
+				    <div class="code mui-input-row">
+				        <input id="reNewPwd" type="password" class="mui-input-clear" placeholder="请再次输入新密码" value="">
+				    </div>
+				</form>
+				<div class="next">
+					<button id="next" type="button" class="mui-btn mui-btn-green" disabled="disabled">确定</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			var oldPwdObj =doc.getElementById("oldPwd"),newPwdObj = doc.getElementById("newPwd"),reNewPwdObj = doc.getElementById("reNewPwd");
+			var nextObj = doc.getElementById("next");
+			_.plusReady(function(){
+				var pdata = {};
+				pdata.privateToken = w.getUser();
+				//原密码的输入
+				oldPwdObj.addEventListener("input",function(){
+					if((this.value && !u.isNull(this.value.trim())) && (newPwdObj.value && !u.isNull(newPwdObj.value.trim())) && (reNewPwdObj.value && !u.isNull(reNewPwdObj.value.trim()))){
+						nextObj.removeAttribute("disabled");
+					}else{
+						nextObj.setAttribute("disabled","disabled");
+					}
+				});
+				//新密码的输入
+				newPwdObj.addEventListener("input",function(){
+					if((this.value && !u.isNull(this.value.trim())) && (oldPwdObj.value && !u.isNull(oldPwdObj.value.trim())) && (reNewPwdObj.value && !u.isNull(reNewPwdObj.value.trim()))){
+						nextObj.removeAttribute("disabled");
+					}else{
+						nextObj.setAttribute("disabled","disabled");
+					}
+				});
+				//重复密码的输入
+				reNewPwdObj.addEventListener("input",function(){
+					if((this.value && !u.isNull(this.value.trim())) && (newPwdObj.value && !u.isNull(newPwdObj.value.trim())) && (oldPwdObj.value && !u.isNull(oldPwdObj.value.trim()))){
+						if(newPwdObj.value == reNewPwdObj.value){
+							nextObj.removeAttribute("disabled");
+						}
+					}else{
+						nextObj.setAttribute("disabled","disabled");
+					}
+				});
+				//点击确定
+				nextObj.addEventListener("tap",function(){
+					u.close("login");
+					doc.activeElement.blur();
+					if(oldPwdObj.value.trim() == ''){
+						_.toast("请输入原密码");
+						oldPwdObj.focus();
+						return;
+					}else if(newPwdObj.value.trim() == ''){
+						_.toast("请输入新密码");
+						newPwdObj.focus();
+						return;
+					}else if(newPwdObj.value.trim() != reNewPwdObj.value.trim()){
+						_.toast("两次密码不相同");
+						newPwdObj.focus();
+						return;
+					}
+					pdata.oldPwd = oldPwdObj.value.trim();
+					pdata.newPwd = newPwdObj.value.trim();
+					pdata.reNewPwd = reNewPwdObj.value.trim();
+					//提交修改
+					u.mypost("user_center/updatePwd",pdata,true,function(data){
+						if(data.code == 0){
+							var lauchFlag = w.getItem("lauchFlag");
+							w.clearItem();
+							_.toast("修改成功，请退出重新登录");
+							w.setItem("lauchFlag",lauchFlag);
+							setTimeout(function(){
+								plus.webview.currentWebview().hide("none");
+							},200);
+							w.openView("../login.html",null,"none");
+						}else if(data.code == 1){
+							_.toast("旧密码不正确");
+						}else if(data.code == 2){
+							_.toast("密码不得小于6位");
+						}else if(data.code == 3){
+							_.toast("密码不得是纯数字");
+						}else if(data.code == 4){
+							_.toast("第一次密码跟第二次密码不一致");
+						}else if(data.code == 5){
+							_.toast("新密码和旧密码一样未作修改");
+						}else if(data.code == -1){
+							_.toast("系统错误");
+						}
+					},myerror);
+				});
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

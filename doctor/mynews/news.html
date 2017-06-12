@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>资讯</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/pullRefresh.css"/>
+		<style>
+			input[type=search] {
+				background-color: #ffffff;
+				margin: 4px 0;
+				font-size: 13px;
+			    padding: 0;
+			}
+			
+			.mui-input-row.mui-search .mui-icon-clear {
+				top: 12px;
+			}
+			.mui-search .mui-placeholder {
+			    line-height: 28px;
+			    top: 4px;
+		    }
+			.mui-placeholder span {
+				position: relative;
+				top: 4px;
+				font-size: 13px;
+			}
+			
+			.mui-search {
+				margin: 1px 15px;
+			}
+			
+			.mui-search.mui-active:before {
+				top: 29px;
+			}
+			
+			.mui-icon.mui-icon-search {
+				position: relative;
+				top: 5px;
+				left: -5px;
+			}
+			
+			.main-font-color {
+				font-size: 16px;
+			}
+			
+			.mui-table-view-cell {
+				padding: 15px;
+			}
+			
+			.mui-table-view-cell:after {
+				left: 0;
+			}
+			
+			.mui-btn {
+				border-radius: 18px;
+				font-size: 10px !important;
+				line-height: 0.42;
+				padding: 6px;
+				border: 0;
+			}
+			
+			.mui-media-object.mui-pull-left {
+				width: 70px;
+				height: 67px;
+			}
+			
+			.mui-table-view .mui-media-object {
+				max-width: 100px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 12px;
+				color: #999999;
+				padding-bottom: 5px;
+			}
+			
+			.mui-btn-blue {
+				background-color: #cccccc;
+				border-radius: 0;
+			}
+			
+			.mui-btn-green {
+				background-color: #8bc952;
+			}
+			
+			.mui-h5,
+			h5 {
+				color: #333333;
+				font-size: 15px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				padding-top: 0;
+			}
+			.vac{
+				font-size:12px;color:#33a2d7;margin:5px 0 0;
+			}
+			.font-color-666{
+				color: #666;
+			}
+			.min-h {
+				min-height: 46px
+			}
+			.mui-table-view-cell img {
+				width: 100px !important
+			}
+			.font-size-14{
+				font-size: 14px;
+			}
+			.font-size-18{
+				font-size: 18px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<h1 class="mui-title">资讯</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-fullscreen mui-scroll-wrapper" style="padding-bottom: 80px;">
+				<form action="">
+					<div class="mui-input-row mui-search" style="margin-top: 44px;">
+					    <input id="search" type="search" class="mui-input-clear" placeholder="输入关键字或标签搜索">
+					</div>
+				</form>
+				<div id="news" class="mui-scroll">
+					<ul id="newslist" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+<script type="text/javascript" src="../js/common.js" ></script>
+<script type="text/javascript">
+	(function(_, doc, u, w) {
+		_.init({
+			swipeBack: false,
+			gestureConfig: {
+				doubletap: true
+			}
+		}), _(".mui-scroll-wrapper").scroll();
+		_(doc).on("doubletap", ".mui-title", function() {
+			_(".mui-scroll-wrapper").scroll().scrollTo(0, 0, 200)
+		})
+		var search = doc.getElementById("search"),list = doc.getElementById("newslist");
+		var page = 0,pdata = {
+			offset: 0,
+			limit: 5
+		};
+		_.plusReady(function() {
+			plus.webview.currentWebview().setStyle({popGesture:'close'});
+			_pull = _('#news').pullToRefresh({
+				down: {
+					callback: function() {
+						pdata.offset = 0;
+						pdata.keyword = '';
+						search.value = '';
+						u.mypost('news/getNewsListDoc', pdata, false, function(data) {
+							_pull.endPullDownToRefresh((data.data.news || []).length == 5);
+							document.activeElement.blur();
+							if(data.code == 0) {
+								page = 1;
+								u.emptyHtml(list), renderList(data.data || []);
+							} else {
+								_.toast(data.msg || '服务器异常');
+							}
+						}, function() {
+							_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+						});
+					}
+				},
+				up: {
+					callback: function() {
+						pdata.offset = (pdata.limit)*page;
+						u.mypost('news/getNewsListDoc', pdata, false, function(data) {
+							_pull.endPullUpToRefresh((data.data.news || []).length < 5);
+							if(data.code == 0) {
+								renderList(data.data || []);
+								page++;
+							} else {
+								_.toast(data.msg || '服务器异常');
+							}
+						}, function() {
+							_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+						});
+					},
+					auto: true
+				}
+			});
+		});
+		
+		var imgServer = null,
+			news = null;
+		//列举数据
+		function renderList(data) {
+			news = data.news;
+			imgServer = data.imgServer;
+			if(news && news.length > 0) {
+				_.each(news, function(i, o) {
+					domItem = doc.createElement("li");
+					domItem.id = o.nid;
+					var img = o.thumbnail == ""?"imgs/default-news.png":imgServer+o.thumbnail;
+					domItem.className = "mui-table-view-cell mui-media";
+					domItem.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
+									"<div class='mui-media-body'>"+
+										"<div class='mui-ellipsis-2 font-size-14 min-h'>"+o.title+"</div>"+
+										"<p class='vac'>"+o.tag+"<span class='mui-pull-right font-color-666'><i class='mui-icon mui-icon-person font-size-18'></i>"+o.author+"&ensp;&ensp;"+(o.createTime && o.createTime.substr(0,10))+"</span></p>"+
+									"</div>";
+					list.appendChild(domItem);
+				});
+			}
+		}
+		
+		//跳转到咨询详情页面
+		_(doc).on("tap", ".mui-table-view-cell.mui-media", function() {
+			doc.activeElement.blur();
+			w.openView("newsdetail.html", {
+				nid: this.id,
+				fromMain: false
+			});
+		})
+		//搜索	
+		function searchKey(key) {
+			pdata.keyword = key;
+			pdata.offset = 0;
+			u.mypost('news/getNewsListDoc', pdata, true, function(data) {
+				if(data.code == 0) {
+					u.emptyHtml(list),renderList(data.data || []);
+				} else {
+					_.toast(data.msg || '服务器异常');
+				}
+			}, function() {
+				_.toast('获取列表失败');
+			});
+		}
+		//键盘ok按键监听
+		search.addEventListener("keypress",function(event) {
+			if(event.keyCode == "13") {
+				document.activeElement.blur();
+				searchKey(search.value);
+				event.preventDefault(); // 阻止默认事件---阻止页面刷新
+			}
+		});
+	})(mui, document, util, window)
+</script>
+</html>

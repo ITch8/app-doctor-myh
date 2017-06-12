@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>客服中心</title>
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style>
+			.mui-bar {
+				position: fixed;
+				z-index: 999;
+				right: 0;
+				left: 0;
+				height: 74px;
+				padding-right: 0;
+				padding-left: 0;
+				border-bottom: 0;
+				background-color: #f7f7f7;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden
+			}
+			.header .mui-title {
+			    color: #32A3D6;
+			    line-height: 48px;
+			    font-size: 17px;
+			}
+			.header{
+				text-align: center;
+				top: 0;
+			}
+			.waring {
+				height: 30px;
+				background-color: #32A3D6;
+				color: #FFFFFF;
+			    text-align: center;
+			    line-height: 32px;
+			    font-size: 13px;
+			}
+			.img{
+				height: 16px;
+				position: absolute; 
+			    left: 3px;
+			    padding: 15px 0 15px 13px;
+			}
+			h1{
+			    font-size: 100%;
+			    font-weight: normal;
+			}
+			body,h1{
+			    margin: 0;
+			    padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+	<!--<header class="mui-bar header">
+		<img src="../icon/back-arrow.png" class="mui-action-back img" />
+		<h1 class="mui-title">客服中心</h1>
+		<div class="waring">
+			服务时间：8:00-18:00
+		</div>
+	</header>-->
+	<div id='msg-list'>
+		<div style="text-align: center;margin-top:50%;font-size: 14px;"><img src="../icon/load2.gif" /><div style="color: #32A3D6;">加载中</div></div>
+	</div>
+	</body>
+<script type="text/javascript" src="../js/mui.min.js" ></script>
+<script type="text/javascript" src="../js/common.js" ></script>
+<script src="https://g.alicdn.com/aliww/ww/json/json.js" charset="utf-8"></script>
+<!-- 强制使用移动端版本的kit -->
+<script src="https://g.alicdn.com/aliww/??h5.openim.sdk/1.0.6/scripts/wsdk.js,h5.openim.kit/0.3.3/scripts/kit.js?mobile=1" charset="utf-8"></script>
+<script>
+	mui.init({swipeBack:true});
+	var sdk = null,WKIThaveLogin = false;
+	var priateToken = null;
+	var height = screen.height;
+		var width = screen.width;
+		var appkey = null,credential=null,touid=null,groupId=null,avatar=null,uid = null,password = null;
+	mui.plusReady(function(){
+		plus.webview.currentWebview().setStyle({
+			softinputMode: "adjustResize"
+		});
+		window.addEventListener("event",function(){
+			if(!WKIThaveLogin){
+				priateToken = window.getItem("privateToken");
+				if(priateToken){
+					//获取客服配置信息
+					util.mypost('customer',{privateToken:priateToken}, false, function(data) {
+						if (data.code == 0) {
+							uid = data.data.userid;
+							password = data.data.password;
+							groupId = data.data.groupid;
+							touid = data.data.touid;
+							appkey = data.data.appkey;
+							avatar =  data.data.icon_url || '../imgs/default-person.png';
+							WKIT.init({
+						        uid:uid,//需要登录的用户nick
+						        appkey:appkey,//申请的appkey
+						        credential:password,// 需要登录的用户的密码，
+						        touid:touid, // 在百川控制台设置的E客服账号
+						        groupId:groupId,//客服模式, 可以传入分组id
+					            sendMsgToCustomService: true,//使用客服模式即给淘宝/千牛客服发送消息, 默认：false
+					            titleBar:false,//是否显示顶部title条
+					            avatar:avatar,//登录用户的头像
+					            themeBgColor: '#32A3D6', // 必须设置此项，其他自定义颜色才能生效
+					            themeColor: '#fff',
+					            msgBgColor: '#32A3D6',
+					            msgColor: '#fff',
+					            width: width,
+					            height: height,
+					            titleBar:true,
+					            title:'服务时间：8:00-18:00',
+					            welcomeMsg:'欢迎来到名医汇肿瘤科客服中心',
+					            imageZoom:true,
+					            onLoginSuccess:function(){
+					            	WKIThaveLogin = true;
+					            },
+					            beforeImageUploaderTrigger: function(event, uploadFn){//接管上传图片按钮
+					         		getImgs(uploadFn);
+					            },
+					            onUploaderSuccess: function(url){
+							        console.log(url);
+							    },
+							    onUploaderError: function(error){
+							        console.log("error==========="+JSON.stringify(error));
+							    },onMsgReceived:function(e){
+									plus.webview.getWebviewById("mymain/main.html").evalJS("newContactInfo()");
+								},onBack:function(){
+									mui.back();
+								}
+						    });
+						}else{
+							mui.toast(data.msg || '服务器异常');
+						}
+					}, function() {
+						mui.toast('获取信息失败,请重试!');
+					});
+				}else{
+					console.log('获取用户信息失败，请重新登录!');
+				}
+			}
+		});
+	});
+	
+	var oldBack = mui.back;
+	mui.back = function(){
+		document.activeElement.blur();
+		setTimeout(function(){
+			oldBack();
+		},10);
+	}
+	
+	/**
+	 * @description 获取本地图片
+	 * @param uploadFn 上传属性
+	 */
+	function getImgs(uploadFn){
+		plus.nativeUI.actionSheet({cancel:"取消",buttons:[{title:"拍照上传"},{title:"相册选择"}]}, function(e){
+			if(e.index == 0) return;
+			if(e.index == 1){
+				plus.camera.getCamera(1).captureImage(function(p){
+					var url = plus.io.convertLocalFileSystemURL(p);
+					var ext = getFileExt(url);
+					plus.nativeUI.showWaiting();
+					plus.zip.compressImage({
+						src:p,dst:'_doc/temp.jpg',quality:10,overwrite:true
+					},function(even){
+						var base64Img = null;//
+						var bitmap = new plus.nativeObj.Bitmap("test"); //test标识谁便取
+				        // 从本地加载Bitmap图片
+				        bitmap.load(even.target,function(){
+				            var base4 = bitmap.toBase64Data();
+				            uploadFn({
+				                ext: 'jpg',
+				                base64Img: base4 
+				            });
+				            plus.nativeUI.closeWaiting();
+				        },function(e){
+				            mui.toast('加载图片失败：'+JSON.stringify(e));
+				        });
+					});
+				});
+			}else if(e.index == 2){
+				plus.gallery.pick(function(p){
+					var base64Img = null;
+					plus.nativeUI.showWaiting();
+					plus.zip.compressImage({
+						src:p,dst:'_doc/temp.jpg',quality:10,overwrite:true
+					},function(even){
+						var base64Img = null;//
+						var bitmap = new plus.nativeObj.Bitmap("test"); //test标识谁便取
+				        // 从本地加载Bitmap图片
+				        bitmap.load(even.target,function(){
+				            var base4 = bitmap.toBase64Data();
+				            uploadFn({
+				                ext: 'jpg',
+				                base64Img: base4
+				            });
+				            plus.nativeUI.closeWaiting();
+				        },function(e){
+				            mui.toast('加载图片失败：'+JSON.stringify(e));
+				        });
+					});
+				},{
+					filter:"image",multiple:false
+				})
+			}
+		});
+	}
+	
+	/**
+	 * @description 把文件转换成base64后的字符串
+	 * @param url 文件路径
+	 * @param callback 回调方法
+	 * @param 输出格式
+	 */
+	function convertImgToBase64(url, callback, outputFormat){ 
+		var canvas = document.createElement('CANVAS'); 
+		var ctx = canvas.getContext('2d'); 
+		var img = new Image; 
+		img.crossOrigin = 'Anonymous';
+		img.onload = function(){ 
+			canvas.height = img.height; 
+			canvas.width = img.width; 
+			ctx.drawImage(img,0,0); 
+			var dataURL = canvas.toDataURL(outputFormat || 'image/png'); 
+			callback.call(this, dataURL);
+			canvas = null; 
+		}; 
+		img.src = url; 
+	} 
+	
+	/**
+	 * @description 获得文件的类型
+	 * @param url 文件路径
+	 * @return 文件类型名
+	 */
+	function getFileExt(url){
+		return url?url.substring(url.lastIndexOf(".")+1,url.length):'';
+	}
+</script>
+</html>

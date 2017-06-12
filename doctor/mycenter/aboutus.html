@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>关于我们</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/aboutus.css" />
+	</head>
+	<body>
+		<div class="mui-content" >
+			<div class="mui-text-center">
+				<img class="logo" src="../imgs/logo-copyright.png">
+			</div>
+			<h2>公司简介</h2>
+			<div class="about">名医汇依托于内地各知名医疗机构，及香港各大医院诊所等境内外的丰富医疗资源，为广大用户提供最新最全的行业资讯和咨询服务，打造国内最专注&最接地气的跨境医疗平台。</div>
+			<div class="contact_us">
+				<h2>联系方式</h2>
+				<p>电话：400-930-6288</p>
+				<p>邮箱：info@du-ms.com</p>
+			</div>
+			<h2>合作医院</h2>
+			<div class="cooperation" id="hospitalList"></div>
+			<div class="website">copyright &copy; 2017 www.du-ms.com</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u){
+			var pdata = {},div = null,aboutData = null,description = null;
+			var list = doc.getElementById("hospitalList");
+			_.plusReady(function(){
+				u.mypost("us/aboutUs",pdata,true,function(data){
+					if(data.code == 0){
+						aboutData = data.data.us[0];
+						description = aboutData.description?aboutData.description:'';
+						_.each(data.data.hospital,function(i,obj){
+							div = doc.createElement("div");
+							div.innerHTML = "<p class='mui-text-center'>"+obj.hospitalNames+"</p>";
+							list.appendChild(div);
+						})
+					}
+				},myerror);
+			});
+		})(mui,document,util)
+	</script>
+</html>

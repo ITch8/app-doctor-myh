@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录--医生端</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/login.css" />
+	</head>
+	<body style="background-color: #F6F6F6;">
+		<div class="login-logo">
+			<div class="login-logo-bg">
+				<img src="imgs/logo.png" />
+			</div>
+		</div>
+		<form id='login-form' class="mui-input-group">
+			<div class="mui-input-row">
+				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号" value="">
+			</div>
+			<div class="mui-input-row">
+				<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码" value="" autocomplete="off">
+			</div>
+		</form>
+		<div class="next">
+			<button id="login" type="button" class="mui-btn mui-btn-grey">登录</button>
+		</div>
+		<div class="tel">
+			<p>温馨提示 : 新用户注册或忘记密码请线下联系客服</p>
+			<p>客服电话 : <span id="tel"></span></p>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript">
+		(function(_, w, doc, u) {
+			var tel = null;
+			_.init({
+				swipeBack: false,
+				preloadPages: [{
+					url: "index.html",
+					id: "index"
+				}, {
+					url: "myclinic/infoaskDetail.html",
+					id: "infoaskDetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "myclinic/askAndAnwserDetail.html",
+					id: "askAndAnwserDetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "myclinic/bookDetail.html",
+					id: "bookDetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "myclinic/onlineaskDetail.html",
+					id: "onlineaskDetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "mynews/newsdetail.html",
+					id: "newsdetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "myclinic/medicalDetail.html",
+					id: "medicalDetail",
+					styles:{popGesture: "hide"}
+				}, {
+					url: "mymain/contactService.html",
+					id: "contactService",
+					styles:{popGesture: "hide"}
+				}
+				]
+			});
+			var accountObj = doc.getElementById("account"),
+				passwordObj = doc.getElementById("password"),
+				telObj = document.getElementById("tel"),
+				loginObj = doc.getElementById("login");
+			var msg = null,
+				title = "提示",
+				btns = ["取消","确 认"];
+			_.plusReady(function() {
+				//首页关闭ios右划
+				plus.webview.currentWebview().setStyle({
+					popGesture:"none"
+				});
+					//获取客服电话
+				u.mypost("api/customerTel",{},false,function(data){
+					if(data.code == 0){
+						tel = data.data.tel || '无';
+						telObj.innerHTML = tel || '-';
+					}else{
+						_.toast(data.msg || '请求失败,请重试');
+					}
+				},myerror);
+				if(w.getUser()) {
+					w.openView("index.html");
+				}
+				setTimeout(function() {
+					plus.navigator.closeSplashscreen(); //手动关闭启动页
+				}, 1500);
+				
+				telObj.addEventListener("tap",function(){
+					plus.device.dial(tel,true);
+				})
+				
+				//账户的输入
+				if(accountObj.value.length > 0 && passwordObj.value.length > 0) {
+					loginObj.removeAttribute("disabled");
+				} else {
+					loginObj.setAttribute("disabled", "disabled");
+				}
+				//监听输入状态
+				accountObj.addEventListener("input", function() {
+					if(this.value.length > 0 && passwordObj.value.length > 0) {
+						loginObj.removeAttribute("disabled");
+					} else {
+						loginObj.setAttribute("disabled", "disabled");
+					}
+				});
+				//监听输入状态
+				passwordObj.addEventListener("input", function() {
+					if(this.value.length > 0 && accountObj.value.length > 0) {
+						loginObj.removeAttribute("disabled");
+					}else{
+						loginObj.setAttribute("disabled", "disabled");
+					}
+				});
+				//登录
+				loginObj.addEventListener("tap", function() {
+					var account = accountObj.value;
+					var password = passwordObj.value;
+					var pdata = {
+						user: account,
+						pwd: password,
+						userType:2
+					}
+					var privateToken = null;
+					u.mypost("api/login", pdata, true, function(data) {
+						_.toast(data.msg);
+						if(data.code == 0) {
+							privateToken = data.data.privateToken;
+							w.setUser(privateToken);
+							sessionStorage.setItem("loginFlag","1");
+							accountObj.value = "";
+							passwordObj.value ="";
+							toMain();
+						}
+					}, myerror);
+				});
+				//检查更新
+				if(sessionStorage.getItem('upgrade') !='1'){
+             		plus.runtime.getProperty(plus.runtime.appid,function(inf){ 
+                    	checkUpdate(inf.version);
+                    	sessionStorage.setItem('upgrade','1');
+                	});
+            	}
+				if(!w.getItem("lauchFlag")){
+					w.openView("guide.html");
+					return;
+				}
+			})
+			//跳转到主页
+			function toMain() {
+				setTimeout(function(){
+					w.openView("index.html");
+				},200)
+				var indexWeb = null,clinicWeb = null;
+				indexWeb = plus.webview.getWebviewById("mymain/main.html");
+				clinicWeb = plus.webview.getWebviewById("myclinic/clinic.html");
+				//首页
+				if(indexWeb) {
+					indexWeb.evalJS("loadList()");
+					indexWeb.evalJS("mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100)");                     
+				}
+				//问诊页面
+				if(clinicWeb) {
+					clinicWeb.evalJS("emptyClinicData()");
+				}
+			}
+			//连续双击退出系统
+			w.doubleTapExit();
+			
+			//需要传递当前的版本
+			function checkUpdate(wgtVer){
+			    u.mypost("api/checkVersion",{clientVersion:wgtVer,pos:2},false,function(data){
+			    	plus.nativeUI.closeWaiting();
+			    	/*返回码说明：
+					0 客户端版本号小于最新版本号 返回更新包下载url
+					1 客户端版本是最新版本 无需更新
+					2 管理员未设置最新版本号
+					3 客户端版本号小于当前版本号但管理员未上传升级包
+					-1 客户端类型传参错误或其他系统错误类型
+					附录：版本号设置和升级包上传在后台管理-系统设置。
+					*/
+	                if(parseInt(data.code) == 0){      
+	                    //可以升级
+	                    plus.nativeUI.confirm("名医肿瘤科医生端检查到当前版本有最新更新，升级？",
+	                        function(event){
+	                            if(event.index ==0){
+	                                downWgt(data.data.downloadURL); //下载更新版的地址
+	                            }                        
+	                        } ,'系统消息',['马上升级','下次再说']);                
+	                }
+			    },function(){
+	                mui.toast('检测更新失败！');
+			    });
+			}
+			// 下载wgt文件
+			function downWgt(wgtUrl){
+//				var fileType = "wgt";
+//				var url='itms-apps://itunes.apple.com/cn/app/id1198123810';//应用在appstore的地址
+			    plus.nativeUI.showWaiting("下载更新文件...");
+			    plus.downloader.createDownload(wgtUrl,{filename:"_doc/update/"}, function(d,status){
+			        if (status == 200) {
+		               	installWgt(d.filename); // 安装wgt包
+		           	} else {
+		               	plus.nativeUI.alert("下载更新失败！");
+		           	}
+			        plus.nativeUI.closeWaiting();
+			    }).start();
+			}
+			// 更新应用资源  
+			function installWgt(path){
+			    plus.nativeUI.showWaiting("安装更新文件...");
+			    plus.runtime.install(path,{},function(){
+			        plus.nativeUI.closeWaiting();        
+			        plus.nativeUI.alert("应用资源更新完成！",function(){
+			            plus.runtime.restart();
+			        });
+			    },function(e){
+			        plus.nativeUI.closeWaiting();        
+			        plus.nativeUI.alert("安装更新文件失败["+e.code+"]："+e.message);
+			    });
+			}
+		})(mui, window, document, util)
+	</script>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>预约详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<link rel="stylesheet" href="../css/detail_common.css" />
+		<link rel="stylesheet" href="../css/book_detail.css" />
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">预约详情</h1>
+		</header>			
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white" id="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="case-list">
+					<div class="mui-row detail">
+						<span class="case-title mui-col-xs-6"><span id="title"></span>的预约挂号</span>
+						<span class="case-detail-sex mui-col-xs-6">性别:<span id="sex">-</span>&ensp;年龄:<span id='age'>-</span></span>
+					</div>
+					<div class="case-detail mui-row">
+						<label class="mui-col-xs-3">预约人:</label><span id="contacts" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">过敏史:</label><span id="allergyHistory" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">诊断:</label><span id="result" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">分期:</label><span id="stages" class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">手机号:</label><span id='appointTel' class="mui-col-xs-9">-</span>
+						<label class="mui-col-xs-3">基本病情:</label>
+						<span class="mui-col-xs-9">
+							<div id="situation">-</div>
+						</span>
+						<label class="mui-col-xs-3">预约时间:</label><span class="mui-col-xs-9" id="appointTime">-</span>
+						<label class="mui-col-xs-3">备注:</label><span id='userRemark' class="mui-col-xs-9">-</span>
+					</div>
+				</div>
+				<div class="divider"></div>
+				<p class="clinicRecord">就诊记录</p>
+				<div id="det" class="cont view-item" >
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll(),_.previewImage();
+			var id = null,content=null,pdata ={};
+			var detObj = doc.getElementById("det"),titleObj = doc.getElementById("title"),sexObj = doc.getElementById("sex"),ageObj =doc.getElementById("age");
+			var contactsObj =doc.getElementById("contacts"),allergyHistoryObj =doc.getElementById("allergyHistory"),stagesObj =doc.getElementById("stages"),appointTelObj = doc.getElementById("appointTel");
+			var appointTimeObj =doc.getElementById("appointTime"),situationObj = doc.getElementById("situation"),userRemarkObj = doc.getElementById("userRemark");
+			w.addEventListener("event",function(e){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				id = e.detail.id;
+				pdata.id = id;
+				pdata.privateToken = w.getUser();
+				console.log("参数======"+JSON.stringify(pdata));
+				u.mypost("doctor_center/getRegNumDetail",pdata,true,function(data){
+					if(data.code == 0){
+						data = data.data;
+						var imgServer = data.imgServer;
+						var detail = data.detail;
+						titleObj.innerHTML = detail.username ||'无';
+						sexObj.innerHTML = detail.sex ||'无';
+						ageObj.innerHTML = detail.age ||'无';
+						contactsObj.innerHTML = detail.contacts ||'无';
+						doc.getElementById('result').innerHTML = detail.result || '无';
+						if("0" == detail.stages){
+							stagesObj.innerHTML = '无';
+						}else if("1" == detail.stages){
+							stagesObj.innerHTML = 'Ⅰ期';
+						}else if("2" == detail.stages){
+							stagesObj.innerHTML = 'Ⅱ期';
+						}else if("3" == detail.stages){
+							stagesObj.innerHTML = 'Ⅲ期';
+						}else if("4" == detail.stages){
+							stagesObj.innerHTML = 'Ⅳ期';
+						}
+						allergyHistoryObj.innerHTML = detail.allergyHistory ||'无';
+						appointTelObj.innerHTML = detail.appointTel ||'无';
+						appointTimeObj.innerHTML = detail.appointTime || '无';
+						situationObj.innerHTML = detail.situation || '无';
+						userRemarkObj.innerHTML = detail.userRemark || '无';
+						u.emptyHtml(detObj);
+						if(data.remark && data.remark.length > 0){
+							var item = null,src = null,len = data.remark.length,imgs = null,imgHtml = null;
+							_.each(data.remark,function(i,o){
+								imgHtml = "";
+								imgs = o.img;
+								item = doc.createElement("div");
+								if(0 == i){
+									src = "../imgs/process-header.png";
+									item.className = "cell";
+								}else if( i < len - 1){
+									src = "../imgs/process-body.png"
+									item.className = "cell cell-body";
+								}else{
+									src = "../imgs/process-body-last.png"
+									item.className = "cell cell-body";
+								}
+								if(imgs){
+									if(imgs.img0){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img0+"' />";
+									}
+									if(imgs.img1){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img1+"' />";
+									}
+									if(imgs.img2){
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(i+1)+"'  src='"+imgServer+imgs.img2+"' />";
+									}
+								}
+								item.innerHTML = "<img src='"+src+"' class='pic' />"+
+											"<span class='mui-ellipsis'>"+(o.visitDate || '')+"</span><span class='status'>"+(o.stage || '')+"</span>"+
+											"<p class='mui-ellipsis'>"+(o.content || '')+"</p>"+
+											"<div class='record-img'>"+imgHtml+
+											"</div>";
+								detObj.appendChild(item);
+							});
+						}else{
+							detObj.innerHTML = nodataHtmlInfo;
+						}
+					}
+				},myerror);
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

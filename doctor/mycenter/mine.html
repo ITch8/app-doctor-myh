@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0;
+			}
+			
+			.mui-table-view:before {
+				top: 0;
+			}
+			
+			.mui-table-view-cell {
+				padding: 13px 15px;
+			}
+			
+			.mui-table-view-cell:after {
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<h1 class="mui-title">我的</h1>
+		</header>
+		<div class="mui-content mui-fullscreen">
+			<ul class="mui-table-view">
+				<li id="myinfo.html" name="个人信息" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-personcenter"></span>&emsp;个人中心
+					</a>
+				</li>
+				<li id="mywallet.html" name="我的钱包" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-personlove"></span>&emsp;我的钱包
+					</a>
+				</li>
+				<li id="mylove.html" name="我的收藏" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-collect"></span>&emsp;我的收藏
+					</a>
+				</li>
+				<li id="updatePwd.html" name="修改密码" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-pwd"></span>&emsp;密码修改
+					</a>
+				</li>
+				<li id="aboutus.html" name="关于我们" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-aboutus"></span>&emsp;关于我们
+					</a>
+				</li>
+				<li id="../mysetting/setting.html" name="设置" class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mycenter-setting"></span>&emsp;设置
+					</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_, doc, u, w) {
+			_.init({
+				swipeBack: false
+			});
+			_.plusReady(function() {
+				var aniShow = "slide-in-right",
+					title = null;
+				initTemplates();
+				var template = getTemplate('template');
+				//获得共用父模板
+				var headerWebview = template.header;
+				//获得共用子webview
+				var contentWebview = template.content;
+				_(".mui-table-view").on("tap", ".mui-table-view-cell", function() {
+					if("myinfo.html" == this.id || "../mysetting/setting.html" == this.id || "mywallet.html" == this.id) {
+						w.openView(this.id);
+					} else {
+						title = this.getAttribute("name");
+						//通知模板修改标题
+						mui.fire(headerWebview, 'updateHeader', {
+							title: title,
+							target: this.id,
+							aniShow: aniShow
+						});
+						if(mui.os.ios || mui.os.android) {
+							var reload = true;
+							if(!template.loaded) {
+								if(contentWebview.getURL() != this.href) {
+									contentWebview.loadURL(this.href);
+								} else {
+									reload = false;
+								}
+							} else {
+								reload = false;
+							}
+							(!reload) && contentWebview.show();
+							headerWebview.show(aniShow, 300);
+						}
+					}
+				})
+			});
+			var templates = {};
+			var getTemplate = function(name, header, content) {
+				var template = templates[name];
+				if(!template) {
+					//预加载共用父模板；
+					var headerWebview = _.preload({
+						url: header,
+						id: name,
+						styles: {
+							popGesture: "hide",
+						},
+						extras: {
+							mType: 'main'
+						}
+					});
+					//预加载共用子webview
+					var subWebview = mui.preload({
+						url: !content ? "" : content,
+						id: name + "-sub",
+						styles: {
+							top: '45px',
+							bottom: '0px',
+						},
+						extras: {
+							mType: 'sub'
+						}
+					});
+					subWebview.addEventListener('loaded', function() {
+						setTimeout(function() {
+							subWebview.show();
+						}, 50);
+					});
+					subWebview.hide();
+					headerWebview.append(subWebview);
+					//iOS平台支持侧滑关闭，父窗体侧滑隐藏后，同时需要隐藏子窗体；
+					if(mui.os.ios) {
+						headerWebview.addEventListener('hide', function() {
+							subWebview.hide("none");
+						});
+					}
+					templates[name] = template = {
+						name: name,
+						header: headerWebview,
+						content: subWebview,
+					};
+				}
+				return template;
+			};
+			var initTemplates = function() {
+				getTemplate('template', 'template.html');
+			};
+		})(mui, document, util, window)
+	</script>
+
+</html>

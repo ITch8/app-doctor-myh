@@ -1,0 +1,344 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>资讯</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/pullRefresh.css"/>
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<style>
+		.mui-col-xs-3 {
+		    width: 20%;
+		}
+		.case-list{
+			border: 1px solid #DDDDDD;
+			margin: 15px;
+			padding: 15px 10px 0;
+		}
+		.case-detail{
+			border-top: 1px solid #DDDDDD;
+			padding: 10px 0 0;
+			margin: 10px 0;
+			font-size: 12px;
+			color: #666666;
+		}
+		.case-detail p{
+			font-size: 12px;
+			color: #666666;
+		}
+		.mui-row img {
+			padding-right: 5px;
+			height: 50px;
+			max-width: 50px;
+		}
+		.imgs{
+			height: 50px;
+		}
+		.mui-row label{
+			text-align: right;
+		}
+		.mui-row span{
+			padding-left: 10px;
+		}
+		.mui-row .mui-btn-mini {
+			line-height: 0.62;
+			font-size: 10px !important;
+			border-radius: 14px;
+			padding: 8px 12px;
+			position: absolute;
+			bottom: 0;
+		    right: -13px;
+			border: 1px solid #32A3D6;
+			color: #32A3D6;
+		}
+		.undo{
+			margin: 10px 15px;
+			font-size: 13px;
+			color: #333333;
+		}
+		.case-title{
+			font-size: 15px;
+			color: #32a3d6;
+		}
+		.case-detail-sex{
+			font-size: 12px;
+			color: #666666;
+			float: right;
+			padding-right:10px;
+		}
+		.money{
+			color: #32a3d6 !important;
+		}
+		.mui-table-view:before, .mui-table-view-cell:after {
+		    height: 0;
+		}
+		.mui-table-view:after{
+			bottom: -15px;
+			height: 0;	
+		}
+		.mui-row.detail .case-title{
+			padding-left: 0px !important;
+		}
+		.mui-row.detail .case-detail-sex{
+			text-align: right;
+		}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">信息列表</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="info" class="mui-scroll">
+				<ul id="infolist" class="mui-table-view">
+			    </ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+	var privateToken = null;
+	(function(_,doc,u,w){
+		var allNewsNum = 0;//所有的信息数量
+		var hasNewinfo = false,_pull = null,imgServer=null;
+		var list = doc.getElementById('infolist');
+		//初始化 (双击)
+		_.init({swipeBack:true,gestureConfig:{
+			 doubletap: true
+		}}),_(".mui-scroll-wrapper").scroll(),_.previewImage();
+		_(doc).on("doubletap",".mui-title",function(){_(".mui-scroll-wrapper").scroll().scrollTo(0,0,200)})
+		var pdata = {offset:0 ,limit:5},page = 0;
+		_.plusReady(function() {
+			privateToken = w.getUser();
+			pdata.privateToken = privateToken;
+			_pull = _('#info').pullToRefresh({
+				down: {
+					callback: function() {
+						pdata.offset = 0;
+						u.mypost('doctor_center/msgList',pdata, false, function(data) {
+							_pull.endPullDownToRefresh((data.data.order || []).length == 5);
+							if (data.code == 0) {
+								page = 1;
+								allNewsNum = data.data.count || 0;
+								localStorage.setItem("allNewsNum",allNewsNum);
+								u.emptyHtml(list),renderList(data.data || []);
+							}else{
+								_.toast(data.msg || '服务器异常');
+							}
+						}, function() {
+							_.toast('获取列表失败'),_pull.endPullDownToRefresh();
+						});
+					}
+				},up: {
+					callback: function() {
+						pdata.offset = (pdata.limit)*page;
+						u.mypost('doctor_center/msgList',pdata, false, function(data) {
+							_pull.endPullUpToRefresh((data.data.order || []).length < 5);
+							if (data.code == 0){
+								page++;
+								renderList(data.data || []);
+								allNewsNum = data.data.count || 0;
+								localStorage.setItem("allNewsNum",allNewsNum);
+							} else {
+								_.toast(data.msg ||'服务器异常');
+							}
+						}, function() {
+							_.toast('获取列表失败'), _pull.endPullUpToRefresh(false);
+						});
+					},auto: true
+				}
+			});
+		});
+		
+		//列举数据
+		function renderList(data){
+			var order = data.order,imgs = null,imgHtml = "";
+			imgServer = data.imgServer;
+			if(order && order.length > 0){
+				_.each(order,function(i,o){
+					var a = i;
+					domItem = doc.createElement("li");
+					domItem.id = o.id || o.appointId;
+					if(o.type == "预约"){
+						domItem.className = "mui-table-view-cell case-list book";
+						typeHtml = "<div class='case-detail mui-row'>"+
+									"<label class='mui-col-xs-3'>预约人:</label><span class='mui-col-xs-9'>"+o.contacts+"</span>"+
+									"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+o.appointTel+"</span>"+
+									"<label class='mui-col-xs-3'>预约时间:</label><span class='mui-col-xs-9'>"+o.appointDate+"</span>"+
+								"</div>";
+					}else if(o.type == "留言问诊"){
+						imgs = o.img;
+						domItem.className = ("完成" == o.state?"mui-table-view-cell case-list answered":"mui-table-view-cell case-list ask");
+						if(imgs){
+							if(imgs instanceof Array){
+								for (var i = 0; i < imgs.length; i++) {
+									imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' src='"+imgServer+imgs[i]+"' />";
+								}
+							}else{
+								imgs.img0?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img0+"' />":imgHtml +="";
+								imgs.img1?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img1+"' />":imgHtml +="";
+								imgs.img2?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img2+"' />":imgHtml +="";
+							}
+						}
+						typeHtml = "<div class='case-detail mui-row'>"+
+							"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+o.nickname+"</span>"+
+							"<label class='mui-col-xs-3'>金额:</label><span class='money mui-col-xs-9'>¥ "+o.price+"</span>"+
+							"<label class='mui-col-xs-3'>询问问题:</label>"+
+							"<span class='mui-col-xs-9'>"+(o.askerContent || '无')+
+								"<div class='imgs'>"+imgHtml+
+								("完成" == o.state?"":"<button type='button' class='mui-btn mui-btn-mini'>"+("未通过"== o.state?'重新回复':'回复')+"</button>")+
+								"</div>"+
+							"</span>"+
+							"</div>";
+					}else if(o.type == "在线问诊"){
+						domItem.className = "mui-table-view-cell case-list online";
+						typeHtml = "<div class='case-detail mui-row'>"+
+							"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.askNickname || '-')+"</span>"+
+							"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+(o.askTelephone || '-')+"</span>"+
+							"<label class='mui-col-xs-3'>沟通时长:</label><span class='mui-col-xs-9'>"+(o.phoneTimeLen || '-')+"分钟</span>"+
+							"<label class='mui-col-xs-3'>沟通时间:</label><span class='mui-col-xs-9'>"+(o.callDate||'-')+"</span>"+
+							"<label class='mui-col-xs-3'>基本病情:</label>"+
+							"<span class='mui-col-xs-9'>"+(o.situation || '无')+"</span>"+
+							"<label class='mui-col-xs-3'>备注:</label><span class='mui-col-xs-9'>"+(o.docRemark||'无')+"</span>"+
+						"</div>";
+					}else if(o.type == "药品分配"){
+						domItem.className = "mui-table-view-cell case-list medical";
+						typeHtml = "<div class='case-detail mui-row'>"+
+						"<label class='mui-col-xs-3'>预约人:</label><span class='mui-col-xs-9'>"+(o.appointName || '无')+"</span>"+
+							"<label class='mui-col-xs-3'>药品名称:</label><span class='mui-col-xs-9'>"+(o.medicineName || '无')+"</span>"+
+							"<label class='mui-col-xs-3'>联系方式:</label><span class='mui-col-xs-9'>"+(o.appoPersonTel || '无')+"</span>"+
+							"<label class='mui-col-xs-3'>预约时间:</label><span class='mui-col-xs-9'>"+(o.appointTime || '无')+"</span>"+
+						"</div>";
+					}
+					domItem.innerHTML = "<div class='mui-row detail'>"+
+							"<span class='case-title mui-col-xs-7'>"+(o.nickname || o.appointName)+"的"+(o.type ||'')+"</span>"+
+							"<span class='case-detail-sex mui-col-xs-5'>性别:"+(o.sex||'无')+"&ensp;年龄:"+(o.age||'无')+"</span>"+
+						"</div>"+typeHtml;
+					list.appendChild(domItem);
+					imgHtml = "";
+				});	
+			}
+		}
+		var extras = {};
+		//进入问诊详情(未完成)
+		_(doc).on("tap",".ask",function(){
+			extras.id = this.id;
+			w.openView("myclinic/infoaskDetail.html",extras);
+		})
+		//进入问诊详情(已完成)
+		_(doc).on("tap",".answered",function(){
+			extras.id = this.id;
+			w.openView("myclinic/askAndAnwserDetail.html",extras);
+		})
+		//进入在线预约详情页面
+		_(doc).on("tap",".online",function(){
+			extras.id = this.id;
+			w.openView("myclinic/onlineaskDetail.html",extras);
+		})
+		//进入预约详情页面
+		_(doc).on("tap",".book",function(){
+			extras.id = this.id;
+			w.openView("myclinic/bookDetail.html",extras);
+		})
+		//进入药品预约详情页面
+		_(doc).on("tap",".medical",function(){
+			extras.appointId = this.id;
+			w.openView("myclinic/medicalDetail.html",extras);
+		})
+	})(mui,document,util,window)
+	
+	/**
+	 * @description 刷新页面数据
+	 * */
+	function refreshData(){
+		util.mypost('doctor_center/msgList',{offset:0 ,limit:5,privateToken:privateToken}, false, function(data) {
+			if (data.code == 0) {
+				allNewsNum = data.data.count || 0;
+				localStorage.setItem("allNewsNum",allNewsNum);
+				util.emptyHtml(document.getElementById('infolist'));
+				var order = data.data.order,imgs = null,imgHtml = "";
+				imgServer = data.data.imgServer;
+				if(order && order.length > 0){
+					mui.each(order,function(i,o){
+						var a = i;
+						domItem = document.createElement("li");
+						domItem.id = o.id;
+						if(o.type == "预约"){
+							domItem.className = "mui-table-view-cell case-list book";
+							typeHtml = "<div class='case-detail mui-row'>"+
+										"<label class='mui-col-xs-3'>预约人:</label><span class='mui-col-xs-9'>"+(o.contacts || '无')+"</span>"+
+										"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+(o.appointTel || '无')+"</span>"+
+										"<label class='mui-col-xs-3'>预约时间:</label><span class='mui-col-xs-9'>"+(o.appointDate || '无')+"</span>"+
+									"</div>";
+						}else if(o.type == "留言问诊"){
+							imgs = o.img;
+							domItem.className = ("完成" == o.state?"mui-table-view-cell case-list answered":"mui-table-view-cell case-list ask");
+							if(imgs){
+								if(imgs instanceof Array){
+									for (var i = 0; i < imgs.length; i++) {
+										imgHtml += "<img data-preview-src='' data-preview-group='"+(preIndex+1)+"' src='"+imgServer+imgs[i]+"' />";
+									}
+								}else{
+									imgs.img0?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img0+"' />":imgHtml +="";
+									imgs.img1?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img1+"' />":imgHtml +="";
+									imgs.img2?imgHtml += "<img data-preview-src='' data-preview-group='"+(a+1)+"' src='"+imgServer+imgs.img2+"' />":imgHtml +="";
+								}
+							}
+							typeHtml = "<div class='case-detail mui-row'>"+
+								"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.nickname || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>金额:</label><span class='money mui-col-xs-9'>¥ "+(o.price || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>询问问题:</label>"+
+								"<span class='mui-col-xs-9'>"+(o.askerContent || '无')+
+									"<div class='imgs'>"+imgHtml+
+									("完成" == o.state?"":"<button type='button' class='mui-btn mui-btn-mini'>"+("未通过"== o.state?'重新回复':'回复')+"</button>")+
+									"</div>"+
+								"</span>"+
+								"</div>";
+						}else if(o.type == "在线问诊"){
+							domItem.className = "mui-table-view-cell case-list online";
+							typeHtml = "<div class='case-detail mui-row'>"+
+								"<label class='mui-col-xs-3'>就诊人:</label><span class='mui-col-xs-9'>"+(o.askNickname || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>手机号:</label><span class='mui-col-xs-9'>"+(o.askTelephone || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>沟通时长:</label><span class='mui-col-xs-9'>"+(o.phoneTimeLen || '无')+"分钟</span>"+
+								"<label class='mui-col-xs-3'>沟通时间:</label><span class='mui-col-xs-9'>"+(o.callDate || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>基本病情:</label>"+
+								"<span class='mui-col-xs-9'>"+(o.situation || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>备注:</label><span class='mui-col-xs-9'>"+(o.docRemark || '无')+"</span>"+
+							"</div>";
+						}else if(o.type == "药品分配"){
+							domItem.className = "mui-table-view-cell case-list medical";
+							typeHtml = "<div class='case-detail mui-row'>"+
+								"<label class='mui-col-xs-3'>预约人:</label><span class='mui-col-xs-9'>"+(o.appointName || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>药品名称:</label><span class='mui-col-xs-9'>"+(o.medicineName || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>联系方式:</label><span class='mui-col-xs-9'>"+(o.appoPersonTel || '无')+"</span>"+
+								"<label class='mui-col-xs-3'>预约时间:</label><span class='mui-col-xs-9'>"+(o.appointTime || '无')+"</span>"+
+							"</div>";
+						}
+						domItem.innerHTML = "<div class='mui-row detail'>"+
+								"<span class='case-title mui-col-xs-7'>"+(o.nickname || o.appointName)+"的"+(o.type ||'')+"</span>"+
+								"<span class='case-detail-sex mui-col-xs-5'>性别:"+(o.sex||'无')+"&ensp;年龄:"+(o.age|| '无')+"</span>"+
+							"</div>"+typeHtml;
+						document.getElementById('infolist').appendChild(domItem);
+						imgHtml = "";
+					});	
+				}
+			}else{
+				mui.toast(data.msg || '服务器异常');
+			}
+		}, function() {
+			mui.toast('获取列表失败');
+		});
+	}
+	</script>
+</html>
