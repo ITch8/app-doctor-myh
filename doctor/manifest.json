@@ -7,7 +7,7 @@
 	"id": "H567DF429",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "名医肿瘤科医生端",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.1",/*应用版本名称*/
+		"name": "1.0.6",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "",/*应用描述信息*/
@@ -60,9 +60,7 @@
 		"Invocation": {
 			"description": "使用Native.js能力"
 		},
-		"Messaging": {
-			"description": "访问通讯能力"
-		},
+
 		"Orientation": {
 			"description": "访问方向感应器"
 		},
@@ -216,7 +214,8 @@
 					"ldpi": "unpackage/res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
 					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
 					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
-					"xxhdpi": "unpackage/res/icons/144x144.png"
+					"xxhdpi": "unpackage/res/icons/144x144.png",
+					"xxxhdpi": "unpackage/res/icons/192x192.png"
 				}
 			},
 			"splashscreen": {
@@ -514,7 +513,9 @@
 					"mycenter/myinfo.html",
 					"mycenter/mywallet.html",
 					"mycenter/updatePwd.html",
-					"mycenter/mylove.html"
+					"mycenter/mylove.html",
+					"css/center/aboutus.css",
+					"imgs/logo-copyright.png"
 				],
 				"refer": [],
 				"priority": 0
@@ -939,7 +940,8 @@
 					"js/mui.zoom.js",
 					"js/mui.previewimage.js",
 					"imgs/banner.png",
-					"imgs/default-person.png"
+					"imgs/default-person.png",
+					"css/center/myinfo.css"
 				],
 				"refer": [],
 				"priority": 0

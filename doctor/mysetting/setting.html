@@ -19,7 +19,7 @@
 			}
 			
 			.mui-table-view-cell:after {
-				left: 0px;
+				left: 0;
 			}
 			
 			.mui-views,
@@ -163,7 +163,7 @@
 				height: 0;
 			}
 			.des{
-				text-indent: 2em;;
+				text-indent: 2em;
 			}
 		</style>
 	</head>
@@ -203,7 +203,7 @@
 							</li>
 						</ul>
 						<ul class="mui-table-view" style="margin-top: 50px;">
-							<li id="loginOut" class="mui-table-view-cell loginOut" style="text-align: center;">
+							<li id="loginOut" class="mui-table-view-cell loginOut" style="text-align: center;color: #FF0000;">
 								退出登录
 							</li>
 						</ul>
@@ -220,7 +220,7 @@
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
-						<textarea id="feedBack" name="feedBack" maxlength="300" rows="12" cols="10" placeholder="请留下您的宝贵意见"></textarea>
+						<textarea id="feedBack" name="feedBack" maxlength="300" rows="12" cols="10" placeholder="请留下您的宝贵意见(不少于7个字)"></textarea>
 						<div class="fonts-num">
 							<span id="num">0</span>\300
 						</div>
@@ -367,21 +367,9 @@
 					}, myerror);
 				})
 					
-				doc.getElementById("about_soft").addEventListener("tap",function(){
-					//检查更新
-					if(sessionStorage.getItem('upgrade') !='1'){
-	             		plus.runtime.getProperty(plus.runtime.appid,function(inf){ 
-	                    	checkUpdate(inf.version);
-	                    	sessionStorage.setItem('upgrade','1');
-	                	});
-	            	}
-				});
-					
 				//退出功能
 				doc.getElementById("loginOut").addEventListener("tap", function() {
 						//关闭登录页面
-						u.close("login");
-						u.close("H567DF429");
 						privateToken = w.getUser();
 						var pdata = {
 							privateToken: privateToken
@@ -394,7 +382,7 @@
 								var lauchFlag = w.getItem("lauchFlag");
 								w.clearItem();
 								w.setItem("lauchFlag",lauchFlag);
-								w.openView("../login.html", null, "none");
+								w.openView("../login.html");
 //							}
 //							else if(data.code == "500"){
 //								_.toast('请重新登录');
@@ -445,56 +433,6 @@
 					}, myerror);
 				});
 			});
-			//需要传递当前的版本
-			function checkUpdate(wgtVer){
-			    u.mypost("api/checkVersion",{clientVersion:wgtVer,pos:2},false,function(data){
-			    	plus.nativeUI.closeWaiting();
-			    	/*返回码说明：
-					0 客户端版本号小于最新版本号 返回更新包下载url
-					1 客户端版本是最新版本 无需更新
-					2 管理员未设置最新版本号
-					3 客户端版本号小于当前版本号但管理员未上传升级包
-					-1 客户端类型传参错误或其他系统错误类型
-					附录：版本号设置和升级包上传在后台管理-系统设置。
-					*/
-	                if(parseInt(data.code) == 0){              
-	                    //可以升级
-	                    plus.nativeUI.confirm("名医肿瘤科医生端检查到当前版本有最新更新，下载升级？",
-	                        function(event){
-	                            if(event.index ==0){
-	                                downWgt(data.data.downloadURL); //下载更新版的地址
-	                            }                        
-	                        } ,'系统消息',['马上升级','下次再说']);                
-	                }
-			    },function(){
-	                mui.toast('检测更新失败！');
-			    });
-			}
-			// 下载wgt文件
-			function downWgt(wgtUrl){
-			    plus.nativeUI.showWaiting("下载更新文件...");
-			    plus.downloader.createDownload(wgtUrl,{filename:"_doc/update/"}, function(d,status){
-			        if (status == 200){
-			            installWgt(d.filename); // 安装wgt包
-			        } else {
-			            plus.nativeUI.alert("下载更新失败！");
-			        }
-			        plus.nativeUI.closeWaiting();
-			    }).start();
-			}
-			// 更新应用资源  
-			function installWgt(path){
-			    plus.nativeUI.showWaiting("安装更新文件...");
-			    plus.runtime.install(path,{},function(){
-			        plus.nativeUI.closeWaiting();        
-			        plus.nativeUI.alert("应用资源更新完成！",function(){
-			            plus.runtime.restart();
-			        });
-			    },function(e){
-			        plus.nativeUI.closeWaiting();        
-			        plus.nativeUI.alert("安装更新文件失败["+e.code+"]："+e.message);
-			    });
-			}
 		})(mui, document, util, window)
 
 		/**

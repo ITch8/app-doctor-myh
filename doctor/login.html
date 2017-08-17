@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" href="css/login.css" />
 	</head>
-	<body style="background-color: #F6F6F6;">
+	<body>
 		<div class="login-logo">
 			<div class="login-logo-bg">
 				<img src="imgs/logo.png" />
@@ -19,7 +19,7 @@
 		</div>
 		<form id='login-form' class="mui-input-group">
 			<div class="mui-input-row">
-				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号" value="">
+				<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入账号" value="">
 			</div>
 			<div class="mui-input-row">
 				<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码" value="" autocomplete="off">
@@ -29,7 +29,7 @@
 			<button id="login" type="button" class="mui-btn mui-btn-grey">登录</button>
 		</div>
 		<div class="tel">
-			<p>温馨提示 : 新用户注册或忘记密码请线下联系客服</p>
+			<p>温馨提示 : 新用户注册或忘记密码请联系客服</p>
 			<p>客服电话 : <span id="tel"></span></p>
 		</div>
 	</body>
@@ -41,25 +41,26 @@
 			_.init({
 				swipeBack: false,
 				preloadPages: [{
-					url: "index.html",
-					id: "index"
-				}, {
 					url: "myclinic/infoaskDetail.html",
 					id: "infoaskDetail",
 					styles:{popGesture: "hide"}
-				}, {
+				}
+				, {
 					url: "myclinic/askAndAnwserDetail.html",
 					id: "askAndAnwserDetail",
 					styles:{popGesture: "hide"}
-				}, {
+				}
+				, {
 					url: "myclinic/bookDetail.html",
 					id: "bookDetail",
 					styles:{popGesture: "hide"}
-				}, {
+				}
+				, {
 					url: "myclinic/onlineaskDetail.html",
 					id: "onlineaskDetail",
 					styles:{popGesture: "hide"}
-				}, {
+				}
+				, {
 					url: "mynews/newsdetail.html",
 					id: "newsdetail",
 					styles:{popGesture: "hide"}
@@ -76,7 +77,7 @@
 			});
 			var accountObj = doc.getElementById("account"),
 				passwordObj = doc.getElementById("password"),
-				telObj = document.getElementById("tel"),
+				telObj = doc.getElementById("tel"),
 				loginObj = doc.getElementById("login");
 			var msg = null,
 				title = "提示",
@@ -86,6 +87,9 @@
 				plus.webview.currentWebview().setStyle({
 					popGesture:"none"
 				});
+				if(w.getUser()) {
+					w.openView("index.html");
+				}
 					//获取客服电话
 				u.mypost("api/customerTel",{},false,function(data){
 					if(data.code == 0){
@@ -95,17 +99,9 @@
 						_.toast(data.msg || '请求失败,请重试');
 					}
 				},myerror);
-				if(w.getUser()) {
-					w.openView("index.html");
-				}
-				setTimeout(function() {
-					plus.navigator.closeSplashscreen(); //手动关闭启动页
-				}, 1500);
-				
 				telObj.addEventListener("tap",function(){
 					plus.device.dial(tel,true);
 				})
-				
 				//账户的输入
 				if(accountObj.value.length > 0 && passwordObj.value.length > 0) {
 					loginObj.removeAttribute("disabled");
@@ -159,8 +155,10 @@
             	}
 				if(!w.getItem("lauchFlag")){
 					w.openView("guide.html");
-					return;
 				}
+				setTimeout(function() {
+					plus.navigator.closeSplashscreen(); //手动关闭启动页
+				}, 1500);
 			})
 			//跳转到主页
 			function toMain() {
@@ -187,22 +185,28 @@
 			function checkUpdate(wgtVer){
 			    u.mypost("api/checkVersion",{clientVersion:wgtVer,pos:2},false,function(data){
 			    	plus.nativeUI.closeWaiting();
-			    	/*返回码说明：
-					0 客户端版本号小于最新版本号 返回更新包下载url
-					1 客户端版本是最新版本 无需更新
-					2 管理员未设置最新版本号
-					3 客户端版本号小于当前版本号但管理员未上传升级包
-					-1 客户端类型传参错误或其他系统错误类型
-					附录：版本号设置和升级包上传在后台管理-系统设置。
-					*/
 	                if(parseInt(data.code) == 0){      
 	                    //可以升级
-	                    plus.nativeUI.confirm("名医肿瘤科医生端检查到当前版本有最新更新，升级？",
-	                        function(event){
-	                            if(event.index ==0){
-	                                downWgt(data.data.downloadURL); //下载更新版的地址
-	                            }                        
-	                        } ,'系统消息',['马上升级','下次再说']);                
+	                    var lastVer = data.data.version || '1.0.0';
+			        	wgtVer = wgtVer && wgtVer.substring(0,wgtVer.indexOf('.'));
+			        	lastVer = lastVer && lastVer.substring(0,lastVer.indexOf('.'));
+			        	if(Number(lastVer) > Number(wgtVer)){//如果最新的大版本号较大 需要整包升级
+			        		plus.nativeUI.confirm("检查到当前版本有更新，下载最新安装包？",
+			                function(event){
+			                    if(event.index ==0){
+			                    	plus.runtime.openURL('http://a.app.qq.com/o/simple.jsp?pkgname=io.dcloud.H567DF429',function(err){
+					        			console.log("open err==="+JSON.stringify(err));
+					        		})
+			                    }                        
+			                } ,'系统消息',['马上下载','下次再说']); 
+			        	}else{
+			        		plus.nativeUI.confirm("检查到当前版本有更新，在线升级？",
+			                function(event){
+			                    if(event.index ==0){
+			                        downWgt(data.data.downloadURL); //下载更新版的地址
+			                    }                        
+			                } ,'系统消息',['马上升级','下次再说']); 
+			        	}
 	                }
 			    },function(){
 	                mui.toast('检测更新失败！');
@@ -210,8 +214,6 @@
 			}
 			// 下载wgt文件
 			function downWgt(wgtUrl){
-//				var fileType = "wgt";
-//				var url='itms-apps://itunes.apple.com/cn/app/id1198123810';//应用在appstore的地址
 			    plus.nativeUI.showWaiting("下载更新文件...");
 			    plus.downloader.createDownload(wgtUrl,{filename:"_doc/update/"}, function(d,status){
 			        if (status == 200) {

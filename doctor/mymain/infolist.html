@@ -114,12 +114,15 @@
 		var hasNewinfo = false,_pull = null,imgServer=null;
 		var list = doc.getElementById('infolist');
 		//初始化 (双击)
-		_.init({swipeBack:true,gestureConfig:{
+		_.init({swipeBack:false,gestureConfig:{
 			 doubletap: true
 		}}),_(".mui-scroll-wrapper").scroll(),_.previewImage();
 		_(doc).on("doubletap",".mui-title",function(){_(".mui-scroll-wrapper").scroll().scrollTo(0,0,200)})
 		var pdata = {offset:0 ,limit:5},page = 0;
 		_.plusReady(function() {
+			plus.webview.currentWebview().setStyle({
+				popGesture:"close"
+			});
 			privateToken = w.getUser();
 			pdata.privateToken = privateToken;
 			_pull = _('#info').pullToRefresh({

@@ -263,7 +263,9 @@
       "mycenter/myinfo.html",
       "mycenter/mywallet.html",
       "mycenter/updatePwd.html",
-      "mycenter/mylove.html"
+      "mycenter/mylove.html",
+      "css/center/aboutus.css",
+      "imgs/logo-copyright.png"
     ],
     "refer": [
       "mysetting/setting.html",
@@ -680,7 +682,8 @@
       "js/mui.zoom.js",
       "js/mui.previewimage.js",
       "imgs/banner.png",
-      "imgs/default-person.png"
+      "imgs/default-person.png",
+      "css/center/myinfo.css"
     ],
     "refer": [
       "mycenter/mywallet.html",
@@ -764,6 +767,7 @@
       "css/mui.min.css",
       "js/mui.previewimage.js",
       "css/detail_common.css"
-    ]
+    ],
+    "refer": []
   }
 }
