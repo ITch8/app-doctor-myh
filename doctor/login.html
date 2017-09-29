@@ -19,7 +19,7 @@
 		</div>
 		<form id='login-form' class="mui-input-group">
 			<div class="mui-input-row">
-				<input id='account' type="tel" class="mui-input-clear mui-input" placeholder="请输入账号" value="">
+				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号" value="">
 			</div>
 			<div class="mui-input-row">
 				<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码" value="" autocomplete="off">
@@ -141,7 +141,6 @@
 							w.setUser(privateToken);
 							sessionStorage.setItem("loginFlag","1");
 							accountObj.value = "";
-							passwordObj.value ="";
 							toMain();
 						}
 					}, myerror);
@@ -188,15 +187,13 @@
 	                if(parseInt(data.code) == 0){      
 	                    //可以升级
 	                    var lastVer = data.data.version || '1.0.0';
-			        	wgtVer = wgtVer && wgtVer.substring(0,wgtVer.indexOf('.'));
-			        	lastVer = lastVer && lastVer.substring(0,lastVer.indexOf('.'));
+			        	wgtVer = wgtVer && wgtVer.substring(0,wgtVer.lastIndexOf('.'));
+			        	lastVer = lastVer && lastVer.substring(0,lastVer.lastIndexOf('.'));
 			        	if(Number(lastVer) > Number(wgtVer)){//如果最新的大版本号较大 需要整包升级
 			        		plus.nativeUI.confirm("检查到当前版本有更新，下载最新安装包？",
 			                function(event){
 			                    if(event.index ==0){
-			                    	plus.runtime.openURL('http://a.app.qq.com/o/simple.jsp?pkgname=io.dcloud.H567DF429',function(err){
-					        			console.log("open err==="+JSON.stringify(err));
-					        		})
+			                    	plus.runtime.openURL('http://a.app.qq.com/o/simple.jsp?pkgname=io.dcloud.H567DF429',function(err){})
 			                    }                        
 			                } ,'系统消息',['马上下载','下次再说']); 
 			        	}else{

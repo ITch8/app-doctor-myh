@@ -8,8 +8,6 @@
 		<meta name="format-detection" content="telephone=no">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="../css/mui.picker.min.css" />
-		<link rel="stylesheet" href="../css/mui.poppicker.css" />
 		<link rel="stylesheet" href="../css/common.css" />
 		<style>
 			.mui-views,
@@ -217,32 +215,30 @@
 						<form class="mui-input-group">
 							<div class="mui-input-row">
 						        <label>卡号:</label>
-						        <input type="number" id="cart" maxlength="19" placeholder="您提现使用的存储卡号">
+						        <input type="number" id="cart" maxlength="19" placeholder="请输入您的银行卡号">
 						    </div>
 						    <div class="mui-input-row">
 						        <label>银行:</label>
-						        <input id="bank" type="text" readonly="readonly" style="padding-right: 32px;">
-						        <a class="mui-navigate-right"></a>
+						        <input id="bank" type="text" placeholder="请输入您的开户银行">
 						    </div>
 						    <div class="mui-input-row">
 						        <label>开户地区:</label>
-						        <input id="address" type="text" readonly="readonly" style="padding-right: 32px;">
-						        <a class="mui-navigate-right"></a>
+						        <input id="address" type="text" placeholder="请输入您的开户地区">
 						    </div>
 						    <div class="mui-input-row">
 						        <label>姓名:</label>
-						        <input type="text" id="realName" value="">
+						        <input type="text" id="realName" placeholder="请输入您的姓名" value="">
 						    </div>
 						     <div class="mui-input-row">
-						        <label>身份证:</label>
-						        <input type="number" id="identity" value="">
+						        <label>身份证号码:</label>
+						        <input type="number" id="identity" placeholder="请输入您的身份证号码" value="">
 						    </div>
 						     <div class="mui-input-row">
 						        <label>金额:</label>
-						        <input type="number" id="amount_num" maxlength="12" value="">
+						        <input type="number" id="amount_num" placeholder="请输入您的提现金额" maxlength="12" value="">
 						    </div>
 						</form>
-						<p class="info">提交后5-7个工作日到账</p>
+						<p class="info">提交后5-7个工作日到帐</p>
 						<div class="next">
 							<button id="sure" type="button" class="mui-btn mui-btn-green" disabled="disabled">确认提现</button>
 						</div>
@@ -268,14 +264,10 @@
 	</body>
 <script type="text/javascript" src="../js/mui.min.js"></script>
 <script type="text/javascript" src="../js/mui.view.js" ></script>
-<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
-<script type="text/javascript" src="../js/mui.poppicker.js" ></script>
-<script type="text/javascript" src="../js/city.data-3.js" ></script>
 <script type="text/javascript" src="../js/common.js" ></script>
 <script type="text/javascript">
 	//初始化单页view
 	var viewApi =null;
-	var userPicker = null,city = null;
 	(function(_,w,doc,u){
 		_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
 		viewApi = _('#app').view({
@@ -286,8 +278,9 @@
 		var sureObj = doc.getElementById("sure"),bankObj = doc.getElementById("bank"),addressObj =doc.getElementById("address"),realNameObj =doc.getElementById("realName");
 		var identityObj = doc.getElementById("identity"),amount_numObj = doc.getElementById("amount_num");
 		_.plusReady(function(){
+			plus.webview.currentWebview().setStyle({popGesture:"close"})
 			var pdata = {privateToken:w.getUser()};
-			//获取我的钱包账户余额
+			//获取我的錢包帳護余額
 			u.mypost("doctor_center/myMoneyIndex",pdata,false,function(data){
 				if(data.code == 0){
 					amountObj.innerHTML = data.data[0][0]?data.data[0][0].amount:0.0;
@@ -300,14 +293,14 @@
 			doc.getElementById("getMoneyLi").addEventListener("tap",function(){
 				u.mypost("doctor_center/takeCashView",pdata,false,function(data){
 					if(data.code == 0){
-						amount2Obj.innerHTML = data.data[0][0]?data.data[0][0].amount:0.0;;//提现页面账户余额
+						amount2Obj.innerHTML = data.data[0][0]?data.data[0][0].amount:0.0;;//提现页面帳護余額
 					}else{
 						_.toast(data.msg);
 					}
 				},myerror);
 			});
 			
-			//进入交易记录页面
+			//进入交易記錄页面
 			doc.getElementById("payRecordLi").addEventListener("tap",function(){
 				u.mypost("doctor_center/tradeLog",pdata,true,function(data){
 					if(data.code == 0){
@@ -333,7 +326,7 @@
 				},myerror);
 			});
 			
-			//监听银行的输入
+			//监听銀行的输入
 			bankObj.addEventListener("input",
 			function() {
 				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
@@ -360,7 +353,7 @@
 					sureObj.setAttribute("disabled", "disabled");
 				}
 			});
-			//监听身份证的输入
+			//监听身份證的输入
 			identityObj.addEventListener("input",
 			function() {
 				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
@@ -369,7 +362,7 @@
 					sureObj.setAttribute("disabled", "disabled");
 				}
 			});
-			//监听金额的输入
+			//监听金額的输入
 			amount_numObj.addEventListener("input",
 			function() {
 				if((bankObj.value && !u.isNull(bankObj.value.trim())) && (addressObj.value && !u.isNull(addressObj.value.trim())) && (realNameObj.value && !u.isNull(realNameObj.value.trim())) && (identityObj.value && !u.isNull(identityObj.value.trim())) && (amount_numObj.value && !u.isNull(amount_numObj.value.trim()))) {
@@ -395,7 +388,7 @@
 						identityObj.value = '';
 						amount_numObj.value = '';
 						doc.getElementById("cart").value = '';
-						//获取我的钱包账户余额
+						//获取我的錢包帳護余額
 						u.mypost("doctor_center/myMoneyIndex",pdata,false,function(data){
 							if(data.code == 0){
 								amountObj.innerHTML = data.data[0][0].amount;
@@ -405,7 +398,7 @@
 						},myerror);
 						_.back();
 					}else if(data.code == 1){
-						_.toast("请填写正确银行卡号");
+						_.toast("请正确填写银行卡号");
 					}else if(data.code == 2){
 						_.toast("请填写正确身份证号");
 					}else if(data.code == 3){
@@ -417,150 +410,7 @@
 					}
 				},myerror);
 			});
-			//编辑其他信息时 地址和银行选择器隐藏
-			var objs = doc.querySelectorAll("input");
-			for (var i = 0; i < objs.length; i++) {
-				if(!objs[i].getAttribute("readonly")){
-					objs[i].addEventListener("focus",function(){
-						setTimeout(function(){
-							userPicker?userPicker.hide():'';
-							city?city.hide():'';
-						},100);
-					});
-				}
-			}
-			bankObj.addEventListener("focus",function(){
-				city?city.hide():'';
-			});
-			addressObj.addEventListener("focus",function(){
-				userPicker?userPicker.hide():'';
-			});
-			bankObj.addEventListener("tap",function(){
-				city?city.hide():'';
-			});
-			addressObj.addEventListener("tap",function(){
-				userPicker?userPicker.hide():'';
-			});
-			doc.getElementById("getmoney_header").addEventListener("tap",function(){
-				city?city.hide():'';
-				userPicker?userPicker.hide():'';
-			});
 		});
-		userPicker = new _.PopPicker();
-		userPicker.setData([{
-			value: '中国银行',
-			text: '中国银行'
-		}, {
-			value: '招商银行',
-			text: '招商银行'
-		}, {
-			value: '农业银行',
-			text: '农业银行'
-		}, {
-			value: '工商银行',
-			text: '工商银行'
-		}, {
-			value: '建设银行',
-			text: '建设银行'
-		}
-		, {
-			value: '美国运通银行',
-			text: '美国运通银行'
-		}
-		, {
-			value: '亚洲商业银行有限公司',
-			text: '亚洲商业银行有限公司'
-		}
-		, {
-			value: '罗马银行',
-			text: '罗马银行'
-		}
-		, {
-			value: '盘谷银行',
-			text: '盘谷银行'
-		}
-		, {
-			value: '东亚银行',
-			text: '东亚银行'
-		}
-		, {
-			value: '印度银行',
-			text: '印度银行'
-		}
-		, {
-			value: '加拿大满地可银行',
-			text: '加拿大满地可银行'
-		}
-		, {
-			value: '法国国家巴黎银行',
-			text: '法国国家巴黎银行'
-		}
-		, {
-			value: '花旗银行',
-			text: '花旗银行'
-		}
-		, {
-			value: '澳洲联邦银行',
-			text: '澳洲联邦银行'
-		}
-		, {
-			value: '恒生银行',
-			text: '恒生银行'
-		}
-		, {
-			value: '韩国外换银行',
-			text: '韩国外换银行'
-		}
-		, {
-			value: '华侨银行',
-			text: '华侨银行'
-		}
-		, {
-			value: '上海商业银行',
-			text: '上海商业银行'
-		}
-		, {
-			value: '永亨银行',
-			text: '永亨银行'
-		}
-		, {
-			value: '永隆银行',
-			text: '永隆银行'
-		}
-		]);
-		var showUserPickerButton = doc.getElementById('bank');
-		showUserPickerButton.addEventListener('tap', function(event) {
-			doc.activeElement.blur();
-			setTimeout(function(){
-				userPicker.show(function(items) {
-					var v = JSON.stringify(items[0].value);
-					v = v.substr(1,v.length-2);
-					if( 0 == v){
-					}else{
-						showUserPickerButton.value = v;
-					}
-				});
-			},200)
-		}, false);
-		city = new _.PopPicker({
-				layer: 3
-			});
-		city.setData(cityData3);
-		var address = doc.getElementById('address'),province = null;
-		address.addEventListener('tap', function(event) {
-			doc.activeElement.blur();
-			setTimeout(function(){
-				city.show(function(items) {
-					province = (items[0] || {}).text == (items[1] || {}).text?(items[0] || {}).text:(items[0] || {}).text + "" + (items[1] || {}).text
-					address.value = province + "" + (items[2].text?items[2].text:'');
-				});
-			},200)
-		}, false);
-		
-//		//监听滚动条的滚动事件 
-//		doc.querySelector(".mui-scroll-wrapper.moneyDiv").addEventListener("scroll",function(){
-//			doc.activeElement.blur();
-//		});
 	})(mui,window,document,util)
 	var view = viewApi.view;
 	(function($) {
@@ -577,12 +427,15 @@
 		//监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
 		//第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
 		view.addEventListener('pageBeforeShow', function(e) {});
-		view.addEventListener('pageShow', function(e) {});
-		view.addEventListener('pageBeforeBack', function(e) {});
-		view.addEventListener('pageBack', function(e) {
-			city?city.hide():'';
-			userPicker?userPicker.hide():'';
+		view.addEventListener('pageShow', function(e) {
+			if("getmoney" == e.detail.page.id || "payrecord" == e.detail.page.id){
+				plus.webview.currentWebview().setStyle({popGesture:"none"})
+			}else{
+				plus.webview.currentWebview().setStyle({popGesture:"close"})
+			}
 		});
+		view.addEventListener('pageBeforeBack', function(e) {});
+		view.addEventListener('pageBack', function(e) {});
 	})(mui);
 </script>
 </html>

@@ -311,13 +311,19 @@
 			//监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
 			//第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
 			view.addEventListener('pageBeforeShow', function(e) {});
-			view.addEventListener('pageShow', function(e) {});
+			view.addEventListener('pageShow', function(e) {
+				if("about" == e.detail.page.id || "help" == e.detail.page.id || "feedback" == e.detail.page.id || "helpDetail" == e.detail.page.id){
+					plus.webview.currentWebview().setStyle({popGesture:"none"})
+				}else{
+					plus.webview.currentWebview().setStyle({popGesture:"close"})
+				}
+			});
 			view.addEventListener('pageBeforeBack', function(e) {});
 			view.addEventListener('pageBack', function(e) {
 				doc.activeElement.blur();
 			});
 			_.plusReady(function() {
-				plus.webview.currentWebview().setStyle({popGesture: "none"});
+				plus.webview.currentWebview().setStyle({popGesture: "close"});
 				var privateToken = null;
 				plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 					doc.getElementById("version").innerHTML = inf.version || '1.0';

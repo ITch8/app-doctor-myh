@@ -304,7 +304,7 @@
 						href = data.data.shareLink;
 						thumbs = [(data.data.imgServer+data.data.news.thumbnail+"_50x50.jpg")||''];
 						doc.getElementById("page").innerHTML = "<h4 id='title'></h4>" +
-							"<p><span id='createTime'></span>&ensp;&ensp;<span id='author' class='main-font-color'></span></p>" +
+							"<p class='mui-text-center'><span id='createTime'></span>&ensp;&ensp;<span id='author' class='main-font-color'></span></p>" +
 							"<p id='content'></p>";
 						var news = data.data.news;
 						isColl = "未收藏" == data.data.isColl ? false : true;

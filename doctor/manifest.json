@@ -7,8 +7,8 @@
 	"id": "H567DF429",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "名医肿瘤科医生端",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.6",/*应用版本名称*/
-		"code": "83"
+		"name": "2.0.0",/*应用版本名称*/
+		"code": "84"
 	},
 	"description": "",/*应用描述信息*/
 	"icons": {
@@ -111,7 +111,7 @@
 			"autoclose": false,/*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
 			"waiting": false
 		},
-		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
+		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
 			"plugins": {
@@ -222,27 +222,27 @@
 				"ios": {
 					"iphone": {
 						"default": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/640x960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/640x1136.png",
-						"retina55": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/1242x2208.png",
-						"retina47": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/750x1334.png",
-						"retina55l": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/2208x1242.png"
+						"retina35": "F:/qdy2017/ios_png/640x960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						"retina40": "F:/qdy2017/ios_png/640x1136.png",
+						"retina55": "F:/qdy2017/ios_png/1242x2208.png",
+						"retina47": "F:/qdy2017/ios_png/750x1334.png",
+						"retina55l": "F:/qdy2017/ios_png/2208x1242.png"
 					},
 					"ipad": {
-						"portrait": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
-						"portrait-retina": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
-						"landscape": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
-						"landscape-retina": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-						"portrait7": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-						"portrait-retina7": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/1536x2008.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-						"landscape7": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						"landscape-retina7": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/ios_png/2048x1536.png"
+						"portrait": "F:/qdy2017/ios_png/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
+						"portrait-retina": "F:/qdy2017/ios_png/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						"landscape": "F:/qdy2017/ios_png/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
+						"landscape-retina": "F:/qdy2017/ios_png/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": "F:/qdy2017/ios_png/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+						"portrait-retina7": "F:/qdy2017/ios_png/1526x2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+						"landscape7": "F:/qdy2017/ios_png/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+						"landscape-retina7": "F:/qdy2017/ios_png/2048x1536.png"
 					}
 				},
 				"android": {
-					"hdpi": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/android_png/480x762.png",
-					"xhdpi": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/android_png/720x1242.png",
-					"xxhdpi": "F:/名医肿瘤科/名医肿瘤科启动页(1)/名医肿瘤科启动页/android_png/1080x1882.png"
+					"hdpi": "F:/qdy2017/android_png/480x762.png",
+					"xhdpi": "F:/qdy2017/android_png/720x1242.png",
+					"xxhdpi": "F:/qdy2017/android_png/1080x1882.png"
 				}
 			}
 		}
